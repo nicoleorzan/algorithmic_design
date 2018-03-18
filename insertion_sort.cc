@@ -5,10 +5,12 @@
  *  algorithm to sort an array A
  **/
 
-void insertion_sort(int *A, int size){//, int &begin, int &end){
+//void insertion_sort(int *A, int size){
+void insertion_sort(int *A, int &begin_index, int &end_index){
 
-  //printf("begin %i \n",begin);
-  //printf("end %i \n",end);
+  int size = end_index - begin_index + 1;
+  printf("begin_index %i \n",begin_index);
+  printf("end_index %i \n",end_index);
   int k, i;
   std::cout<<"size in funciton "<<size<<std::endl;
   for (int j=1; j<size; j++){
@@ -24,7 +26,6 @@ void insertion_sort(int *A, int size){//, int &begin, int &end){
     
 }
 
-
 int main(){
 
   int *A;
@@ -38,15 +39,14 @@ int main(){
   }
   printf("\n");
 
-  int begin = *A;
-  int end = *(A + size -1);
+  //int begin = *A;
+  //int end = *(A + size -1);
+  int begin_index = 0;
+  int end_index = size - 1;
   printf("size %i \n",size);
-  printf("begin %i \n",begin);
-  printf("end %i \n",end);
-  printf("&begin %p \n",&begin);
-  printf("&end %p \n",&end);
 
-  insertion_sort(A, size);
+  // insertion_sort(A, size);
+  insertion_sort(A, begin_index, end_index);
   
    for (int i=0; i<size; i++){
     printf("%i ",A[i]);
@@ -54,6 +54,5 @@ int main(){
   printf("\n");
 
   free(A);
-  
   return 0;
 }

@@ -1,6 +1,6 @@
 SRC = $(wildcard *.cc)
 CC = g++
-CCFLAGS = -g -std=c++11 -Wall -Wextra
+CCFLAGS = -g -std=c++11 -Wall -Wextra -fopenmp
 EXE = $(SRC:.cc=.x)
 
 all: $(EXE)
