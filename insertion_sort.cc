@@ -6,18 +6,18 @@
  **/
 
 //void insertion_sort(int *A, int size){
-void insertion_sort(int *A, int &begin_index, int &end_index){
+void insertion_sort(int *A, int begin_index, int end_index){
 
-  int size = end_index - begin_index + 1;
+  //int size = end_index - begin_index + 1;
   printf("begin_index %i \n",begin_index);
   printf("end_index %i \n",end_index);
   int k, i;
-  std::cout<<"size in funciton "<<size<<std::endl;
-  for (int j=1; j<size; j++){
+  // std::cout<<"size in funciton "<<size<<std::endl;
+  for (int j=begin_index+1; j<end_index+1; j++){
     k = *(A+j);
-    std::cout<<"k "<<k<<std::endl;
+    // std::cout<<"k "<<k<<std::endl;
     i = j-1;
-    while(i>=0 && *(A+i)>k){
+    while(i>=begin_index && *(A+i)>k){
       *(A+i+1) = *(A+i);
       i=i-1;
       *(A+i+1) = k;

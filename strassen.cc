@@ -20,6 +20,8 @@ void print_mat(int P, int M, K * matr){
   
 }
 
+struct Different_matrices{};
+
 template<typename K>
 bool check_mat(K * A, K * B, int P){
   
@@ -27,7 +29,7 @@ bool check_mat(K * A, K * B, int P){
     for (int j=0;j<P;j++){
       if (A[i+j*P] != B[i+j*P]){
 	std::cout<<"DIVERSE!!"<<std::endl;
-	return 1;
+        throw Different_matrices{};
       }
     }
   }
@@ -74,7 +76,6 @@ void strassen(K* A, K* B, K* C, int size){
   C21 = new K[N*N];
   C12 = new K[N*N];
   C22 = new K[N*N];
-  std::cout<<"here"<<std::endl;
   
   for (int i=0; i<N; i++){
     for (int j=0; j<N; j++){
