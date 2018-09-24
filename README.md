@@ -1,1 +1,1 @@
-Git repository of Algorithmic Design course, containing my exercises
+Git repository with the implementations of the Algorithmic Design course exercises.

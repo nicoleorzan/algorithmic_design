@@ -1,7 +1,6 @@
-#include <stdlib.h>
 #include <iostream>
  
-/** This is the implementaition of the insertion sort
+/** Implementaition of the insertion sort
  *  algorithm to sort an array A
  **/
 
