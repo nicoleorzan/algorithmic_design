@@ -1,0 +1,10 @@
+#include "graph.h"
+#define SIZE 5
+#include "DFS.cc"
+#include "BFS.cc"
+#include "dijkstra.cc"
+
+main(){
+
+  return 0;
+}

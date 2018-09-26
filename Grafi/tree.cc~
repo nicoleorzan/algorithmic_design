@@ -1,0 +1,23 @@
+
+class Tree{
+
+  struct node{
+    int id;
+    node *next;
+
+  node(int i): id{i} {};
+  };
+
+  node* root;
+ public:
+
+  Tree();
+ Tree(int i): root{new node{i}} {};
+  ~Tree();
+
+
+};
+
+int main(){
+  return 0;
+}

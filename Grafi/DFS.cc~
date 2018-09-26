@@ -1,0 +1,71 @@
+//#include <graph.h>
+#define SIZE 5
+
+template<typename T>
+void print_char(T A){
+  for(int i=0; i<SIZE; i++){
+    printf("%c ",A[i]);
+  }
+  printf("\n");
+}
+template<typename T>
+void print_array(T A){
+  for(int i=0; i<SIZE; i++){
+    printf("%i ",A[i]);
+  }
+  printf("\n");
+}
+
+
+void DFS_visit(int u, char *color, int time, int* d, int *pi){
+  printf("calling DFS_visit\n");
+  printf("time: %i, vector color: ",time);
+  print_char(color);
+  
+  color[u] = 'g';
+  time++;
+
+  for(int v=0; v<SIZE; v++){
+    if (color[v] == 'w'){
+      pi[v] = u;
+      DFS_visit(v, color, time, d, pi);   
+    }
+  }
+  color[u] = 'b';
+  time++;
+  
+} 
+
+void DFS(Graph g){
+  printf("================= \n");
+  printf("Depth-First Search algorithm\n");
+  printf("================= \n");
+
+  int *d = (int*) malloc(SIZE*sizeof(int) );
+  int *pi = (int*) malloc(SIZE*sizeof(int) );
+  char *color = (char*) malloc(SIZE*sizeof(char) );
+  int time =0;
+
+  printf("initialization\n"); 
+  for(int u=0; u<SIZE; u++){ // initialization
+    color[u] = 'w';
+    pi[u] = 0;
+  }
+   printf("vector color inizialmente:\n");
+   print_char(color);
+   printf("\n");
+
+
+  for(int u=0; u<SIZE; u++){
+    if (color[u] =='w'){
+      DFS_visit(u, color, time, d, pi);
+    }
+  }
+
+  printf("vector color alla fine: ");
+  print_char(color);
+
+  free(d);
+  free(pi);
+  free(color);
+}
