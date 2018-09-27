@@ -1,10 +1,12 @@
 #define SIZE 5
+#include "queue.cc"
 
 void tarjan_scc(Graph g){
   int* d = (*int)malloc(SIZE*sizeof(int));
   int* lowlink = (*int)malloc(SIZE*sizeof(int));
   int* color = (*int)malloc(SIZE*sizeof(char));
-  int q[SIZE]={0};
+  //int q[SIZE]={0};
+  queue q;
   int time=0;
 
   for (int i=0; i<SIZE; i++){
@@ -22,14 +24,15 @@ void tarjan_scc(Graph g){
 }
 
 
-int tarjan_scc_real(Graph g, int v, int time, int q, int* d, int* lowlink, int* color){
+int tarjan_scc_real(Graph g, int v, int time, queue q, int* d, int* lowlink, int* color){
   int count = 0;
   int* tmp_scc;
   d[v] = time;
   lowlink[v] = time;
   time ++;
   color[v] = 'g';
-  q[count] = v;
+  // q[count] = v;
+  q.enqueue(v);
 
 
   for (int w=0; w<SIZE; w++){
@@ -46,7 +49,8 @@ int tarjan_scc_real(Graph g, int v, int time, int q, int* d, int* lowlink, int* 
     }
   }
   int size;
-  int* scc = (*int)malloc(1*sizeof(int));
+  //int* scc = (*int)malloc(1*sizeof(int));<
+  queue scc;
   color[v] = 'b';
   if (lowlink[v]==d[v]){
     scc = 0;

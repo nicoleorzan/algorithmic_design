@@ -1,7 +1,6 @@
 #include <iostream>
 
 class Dynamic_array{
-
   int size;
   int *A;
   
@@ -20,6 +19,7 @@ public:
   void print_vector() const;
   void push_back(int el[], int plus);
   void push_head(int el[], int plus);
+  void dequeue_last();
 
 };
 
@@ -65,6 +65,10 @@ void Dynamic_array::push_head(int el[], int plus){
   free(A_new); 
 }
 
+void Dynamic_array::dequeue_last(){
+   size= size-1;
+}
+
 int main(){
   int siz = 3;
   int el[siz]{5,6,7};
@@ -82,6 +86,8 @@ int main(){
   int ee[1]{66};
   int si = 1;
   a.push_head(ee, si);
+  a.print_vector();
+  a.dequeue_last();
   a.print_vector();
   return 0;
 }
