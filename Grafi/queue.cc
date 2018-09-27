@@ -1,16 +1,16 @@
 #include <iostream>
 
-//struct node{};
+//struct node;
 
 class queue{
 
-  struct node{
-    int val;
-    node* next;
+   struct node{
+     int val;
+     int key;
+     node* next;
   };
 
   node* root;
-  // node* last;
   int size;
 
 public:
@@ -20,18 +20,17 @@ public:
   };
   queue(int v) {
     size = 1;
-    root = new node{v, nullptr};
+    root = new node{v, 1, nullptr};
   };
   ~queue() {delete root;};
-  //~queue();
   
-  int return_size() {return size; };
+  int return_size() { return size; };
   void print_queue();
   void enqueue(int v);
-  void dequeue(int v);
+  void dequeue(int k);
   int dequeue_last();
   int get_head(){return this->root->val;};
-  int get_last();
+  node* get_last();
   bool is_empty();
 
 };
@@ -48,7 +47,7 @@ void queue::print_queue(){
   }
   node *ptr = this->root;
   for(int i=0; i<size; i++){
-    printf("%i ",ptr->val);
+    printf("key=%i, val=%i   \n",ptr->key,ptr->val);
     ptr=ptr->next;
   }
   printf("\n");
@@ -56,55 +55,74 @@ void queue::print_queue(){
 
 void queue::enqueue(int v){
   if (size==0){
-    this->root = new node{v, nullptr};
+    this->root = new node{v, 1, nullptr};
     size++;
     return;
   }
-  //int i=0;
-  //node* last = get_last();
   node *ptr = this->root;
   while(ptr->next!=nullptr){
     ptr=ptr->next;
   }
-  ptr->next = new node{v, nullptr};
+  int k = ptr->key;
+  k++;
+  ptr->next = new node{v, k, nullptr};
   size++;
 }
 
-void queue::dequeue(int v){
-  printf("dequeuing value %i \n", v);
+void queue::dequeue(int k){
+  if (k>size){
+    printf("key out of size, returning...\n");
+    return;
+  }
+  printf("dequeuing node with key %i \n", k);
   if (size!=0){
-    if (this->root->val == v){
+    if (this->root->key == k){
       printf("value is root\n");
+      this->root->next->key = this->root->key;
       this->root = this->root->next;
+      node* ptr = this->root;
+      //change all others
+      while(ptr->next!=nullptr){
+	ptr->next->key--;
+	ptr=ptr->next;
+      }
+      //end
       size--;
       return;
       }
 
+    //value is not the root
     node *ptr = this->root;
-    for (int i=1; i<size; i++){
-      if (ptr->next->val == v){
-	ptr->next=ptr->next->next;
-	size--;
-	return;
-      }
-      else{
-	ptr=ptr->next;
-	//printf("iterating to %i \n", ptr->val);
-      } 
+    while(ptr->next->key!=k){
+      ptr=ptr->next;
     }
+    //now we found the key
+    printf("found\n");
+    if (ptr->next->next!=nullptr){
+      ptr->next=ptr->next->next;
+      ptr->next->key--;
+      ptr = ptr->next;
+      while(ptr->next!=nullptr){
+	ptr->next->key--;
+	ptr=ptr->next;
+      }
+    }
+    size--;
+    
   }
 }
 
-int queue::get_last(){
+queue::node* queue::get_last(){
   node* ptr = this->root;
   while(ptr->next!=nullptr){
     ptr=ptr->next;
   }
-  return ptr->val;
+  return ptr;
 }
 
 int queue::dequeue_last(){
-  this->get_last();
+  node* ptr = get_last();
+  return ptr->key;
 }
 
 int main(){
@@ -114,22 +132,37 @@ int main(){
   q.enqueue(3);
   q.enqueue(5);
   q.enqueue(6);
-  printf("size of q=%i   ", q.return_size());
+  printf("size of q=%i\n", q.return_size());
   q.print_queue();
   q.enqueue(88);
-  printf("size of q=%i   ", q.return_size());
+  q.enqueue(0);
+  q.enqueue(3);
+  q.enqueue(99);
+  q.enqueue(6);
+  q.enqueue(6);
+  printf("size of q=%i\n", q.return_size());
   q.print_queue();
 
-  q.dequeue(3);
-  printf("size of q=%i   ", q.return_size());
+  int deq = 14;
+  q.dequeue(deq);
+  printf("size of q=%i\n", q.return_size());
   q.print_queue();
   printf("head=%i \n",q.get_head());
-  // printf("last=%i \n",q.get_last());
+  printf("last_key=%i, last_val=%i \n",q.get_last()->key,q.get_last()->val);
+
+
+  printf("\n\nnew queue\n");
   queue ed;
   ed.enqueue(18);
+  //ed.print_queue();
+  ed.enqueue(18);
+  ed.enqueue(8);
+  ed.enqueue(1);
+  ed.enqueue(6777);
   ed.print_queue();
-  ed.dequeue(18);
+  ed.dequeue(4);
   ed.print_queue();
+  printf("last_key=%i, last_val=%i \n",ed.get_last()->key, ed.get_last()->val);;
   
 
   return 0;

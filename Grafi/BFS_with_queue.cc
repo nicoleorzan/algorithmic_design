@@ -69,7 +69,7 @@ void BFS(Graph g, int s){
    //printf("starting while loop \n");
    //while (out!=SIZE){
    while(q.is_empty==0)
-     u = q.dequeue();
+     u = q.dequeue_last();
      // u = q[out];
    //out++;
 #ifdef DEBUG
