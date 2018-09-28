@@ -1,6 +1,5 @@
 #include <iostream>
-
-//struct node;
+//#define DEBUG
 
 class queue{
 
@@ -22,15 +21,19 @@ public:
     size = 1;
     root = new node{v, 1, nullptr};
   };
-  ~queue() {delete root;};
+  ~queue(){};// {delete root;};
   
   int return_size() { return size; };
   void print_queue();
   void enqueue(int v);
   void dequeue(int k);
-  int dequeue_last();
-  int get_head(){return this->root->val;};
+  int dequeue_last_getting_key();
+  int dequeue_last_getting_val();
+  int get_from_key(int k);
+  int get_head();
+  int pop();
   node* get_last();
+  node* get_penultimate();
   bool is_empty();
 
 };
@@ -40,6 +43,13 @@ bool queue::is_empty(){
   return 0;
 }
 
+int queue::get_head(){
+  if (is_empty()!=1){
+    printf("queue not empty\n");
+    return this->root->val;
+  }
+  //else should throw exception..
+}
 void queue::print_queue(){
   if (size==0) {
     printf("queue is empty\n");
@@ -50,10 +60,13 @@ void queue::print_queue(){
     printf("key=%i, val=%i   \n",ptr->key,ptr->val);
     ptr=ptr->next;
   }
-  printf("\n");
+  //printf("\n");
 }
 
 void queue::enqueue(int v){
+#ifdef DEBUG
+  printf("enqueuing val=%i\n", v);
+#endif
   if (size==0){
     this->root = new node{v, 1, nullptr};
     size++;
@@ -74,10 +87,15 @@ void queue::dequeue(int k){
     printf("key out of size, returning...\n");
     return;
   }
-  printf("dequeuing node with key %i \n", k);
+  //printf("dequeuing node with key %i \n", k);
   if (size!=0){
     if (this->root->key == k){
-      printf("value is root\n");
+      if (size==1){
+	this->root=nullptr;
+	size--;
+	return;
+      }
+      //printf("value is root\n");
       this->root->next->key = this->root->key;
       this->root = this->root->next;
       node* ptr = this->root;
@@ -97,7 +115,7 @@ void queue::dequeue(int k){
       ptr=ptr->next;
     }
     //now we found the key
-    printf("found\n");
+    //printf("found\n");
     if (ptr->next->next!=nullptr){
       ptr->next=ptr->next->next;
       ptr->next->key--;
@@ -120,12 +138,98 @@ queue::node* queue::get_last(){
   return ptr;
 }
 
-int queue::dequeue_last(){
-  node* ptr = get_last();
-  return ptr->key;
+queue::node* queue::get_penultimate(){
+  node* ptr = this->root;
+  while(ptr->next->key!=size){
+    ptr=ptr->next;
+  }
+  return ptr;
 }
 
-int main(){
+
+int queue::dequeue_last_getting_key(){
+#ifdef DEBUG
+  printf("dequeue last getting key\n");
+#endif
+   if (size==1){
+    int k =this->root->key;
+    size--;
+    delete this->root;
+    return k;
+  }
+  node* ptr = get_penultimate();
+  int k = ptr->next->key;
+  ptr->next=nullptr;
+  size--;
+
+  return k;
+}
+
+int queue::dequeue_last_getting_val(){
+#ifdef DEBUG
+  printf("dequeue last getting val\n");
+#endif
+  if (size==1){
+    int v =this->root->val;
+    size--;
+    delete this->root;
+    return v;
+  }
+  node* ptr = get_penultimate();
+  int v = ptr->next->val;
+  ptr->next=nullptr;
+  size--;
+
+  return v;
+}
+
+int queue::pop(){
+  if (this->is_empty()==1) {
+    printf("cannot pop an empty queue\n");
+    return 0;
+  }
+#ifdef DEBUG
+  printf("pop queue\n");
+#endif
+  node* ptr=this->root;
+  if (size==1){
+    //node* ptr=this->root;
+    delete this->root;
+    size--;
+    return 0;
+  }
+  this->root=this->root->next;
+  this->root->key--;
+  ptr=this->root;
+  while(ptr->next!=nullptr){
+    ptr->next->key--;
+    ptr=ptr->next;
+  }
+
+  size--;
+  //printf("size=%i\n",size);
+  //printf("return=%i\n",ptr->val);
+  return ptr->val;
+
+}
+
+int queue:: get_from_key(int k){
+  if (is_empty()==1) {
+    printf("cannot get value of empty queue\n");
+  }
+  node* ptr = this->root;
+  while(ptr->key!=k && ptr->next!=nullptr){
+    ptr = ptr->next;
+  }
+  /* if (ptr->next==nullptr) {
+    printf("key not found\n");
+    return -1;
+    }*/
+  return ptr->val;
+}
+
+
+/*int main(){
 
 
   queue q(2);
@@ -160,11 +264,22 @@ int main(){
   ed.enqueue(1);
   ed.enqueue(6777);
   ed.print_queue();
-  ed.dequeue(4);
+  ed.pop();
   ed.print_queue();
-  printf("last_key=%i, last_val=%i \n",ed.get_last()->key, ed.get_last()->val);;
+  //ed.pop();
+  //ed.pop();
+  //ed.pop();
+  //ed.pop();
+  //ed.print_queue();
+  //ed.dequeue(4);
+  //ed.print_queue();
+  //printf("penultimate_key=%i, penultimate_val=%i \n",ed.get_penultimate()->key, ed.get_penultimate()->val);
+  int u = ed.dequeue_last_getting_key();
+  printf("I got u=%i\n", u);
+  ed.print_queue();
+  
   
 
   return 0;
 }
-
+*/
