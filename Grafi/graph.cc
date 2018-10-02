@@ -1,10 +1,11 @@
 //#include <iostream>
 #include "graph.h"
+//#include "collapse.cc"
+#include "adjacency_list.cc"
 //#include "DFS.cc"
-#include "queue.cc"
+//#include "queue.cc"
 #include "tarjan.cc"
 //#include "BFS_with_queue.cc"
-//#include "BFS.cc"
 //#include "dijkstra.cc"
 
 void Graph::print() const {
@@ -40,6 +41,17 @@ void Graph::insert_admat(int i, int j) {
     admat[j+SIZE*i] = 1;
   }
 }
+
+/*void Graph::insert_admat(int i, int j) {
+  if ((i<0 || i>=SIZE) && (j<0 || j>=SIZE)){
+    printf("size out of the limit!!");
+    return;
+  }
+  else {
+    admat[i+SIZE*j] = 1;
+    admat[j+SIZE*i] = 1;
+  }
+}*/
 
 void Graph::insert_reacmat(int i, int j) { //i reaches j
   if ((i<=-SIZE || i>=SIZE) && (j<=-SIZE || j>=SIZE)){
@@ -81,10 +93,12 @@ int main(){
   /*int s = 4;
     BFS(g1, s);*/
   tarjan_scc(g1);
+  //int* mn = (int*)malloc(SIZE*sizeof(int));
+  //collapse(g1, mn);
   //DFS(g1);
   //Dijkstra(g1);
 
-  
+  //free(mn);
   return 0;  
 }
 

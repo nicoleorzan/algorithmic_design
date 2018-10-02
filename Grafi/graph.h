@@ -8,6 +8,7 @@ class Graph{
 
  private:
  
+ void insert_admat(int i, int j);
      
  public:
   
@@ -29,7 +30,6 @@ class Graph{
 
   void print() const;
   void print_reacmat() const;
-  void insert_admat(int i, int j);
   void insert_reacmat(int i, int j);		
   void clear();
 

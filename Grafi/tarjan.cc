@@ -1,5 +1,5 @@
 //#define DEBUG
-
+#include "queue.cc"
 
 template<typename T>
 void print_char(T* A, int dim){
@@ -18,7 +18,7 @@ void print_array(T* A, int dim){
 }
 
 
-int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, char* color){
+int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, char* color, adjacency_list &sccs){
   printf("tarjan scc real, v=%i, time=%i\n", v, time);
   d[v] = time;
   lowlink[v] = time;
@@ -35,7 +35,7 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
   for (int w=0; w<SIZE; w++){
     if( g.reac_mat[w+SIZE*v]==1){
       if (color[w]=='w'){
-	time = tarjan_scc_real(g, w, time, q, d, lowlink, color);
+	time = tarjan_scc_real(g, w, time, q, d, lowlink, color, sccs);
 	if (lowlink[v]>lowlink[w]) { lowlink[v] = lowlink[w];}
 #ifdef DEBUG
 	printf("size of q=%i\n",q.return_size());
@@ -48,8 +48,9 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
     }
   }
 
-
+  
   int w;
+  int fixed;
 #ifdef DEBUG
   printf("=======root node=======, v=%i\n", v);
   printf("CHECK LOWLINK OF V=%i\n", v);
@@ -62,18 +63,30 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
     queue scc;
     printf("--------->SCC for v=%i\n",v);
     w = q.dequeue_last_getting_val();
+    fixed=w;
+    // if w not in scc precedenti -> maybe iterator over values
+    //printf("sccs size=%i\n",sccs.return_size());
+    sccs.add_node(w); 
     while(w!=v){
+      //sccs.enqueue(w);
       scc.enqueue(w);
       w = q.dequeue_last_getting_val();
+      sccs.add_neighbor(fixed,w);
     }
+    //sccs.enqueue(w);
     scc.enqueue(w);
+    // end if w not in scc precedenti
+    printf("printing scc\n");
+    scc.print_queue();
+    printf("printing q\n");
+    q.print_queue();
   }
-#ifdef DEBUG
+  #ifdef DEBUG
   scc.print_queue();
   q.print_queue();
   print_char(color, SIZE);
   printf("exiting\n");
-#endif
+  #endif
   
   return time;
 }
@@ -88,6 +101,8 @@ void tarjan_scc(Graph g){
   queue q;
   int edges=0;
   int time=0;
+  //queue sccs;
+  adjacency_list sccs;
   
   for (int i=0; i<SIZE; i++){
     for (int j=0; j<SIZE; j++){
@@ -102,11 +117,12 @@ void tarjan_scc(Graph g){
   for (int v=0; v<SIZE; v++){
     if (color[v]=='w'){
       int v = 4;
-      time = tarjan_scc_real(g, v, time, q,  d, lowlink, color);
+      time = tarjan_scc_real(g, v, time, q,  d, lowlink, color, sccs);
     }
   }
   
   printf("time=%i\n", time);
+  sccs.print_list();
   free(d);
   free(lowlink);
   free(color);

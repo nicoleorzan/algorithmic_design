@@ -1,12 +1,20 @@
 #include <iostream>
 //#define DEBUG
 
+#ifndef QUEUE
+#define QUEUE
+
 class queue{
 
    struct node{
+
+   public:
      int val;
      int key;
      node* next;
+
+     node(int v, int k): val{v}, key{k}, next{nullptr} {}
+
   };
 
   node* root;
@@ -15,11 +23,11 @@ class queue{
 public:
   queue(){
     size = 0;
-    root = nullptr;
+    //root = nullptr;
   };
   queue(int v) {
     size = 1;
-    root = new node{v, 1, nullptr};
+    root = new node{v, 1};//, nullptr};
   };
   ~queue(){};// {delete root;};
   
@@ -43,12 +51,14 @@ bool queue::is_empty(){
   return 0;
 }
 
+struct Empty_queue {};
+
 int queue::get_head(){
-  if (is_empty()!=1){
+  if (is_empty()==0){
     printf("queue not empty\n");
     return this->root->val;
   }
-  //else should throw exception..
+  else throw Empty_queue{};
 }
 void queue::print_queue(){
   if (size==0) {
@@ -57,10 +67,11 @@ void queue::print_queue(){
   }
   node *ptr = this->root;
   for(int i=0; i<size; i++){
-    printf("key=%i, val=%i   \n",ptr->key,ptr->val);
+    //printf("(key=%i, val=%i) ",ptr->key,ptr->val);
+    printf("v=%i ",ptr->val);
     ptr=ptr->next;
   }
-  //printf("\n");
+  printf("\n");
 }
 
 void queue::enqueue(int v){
@@ -68,7 +79,7 @@ void queue::enqueue(int v){
   printf("enqueuing val=%i\n", v);
 #endif
   if (size==0){
-    this->root = new node{v, 1, nullptr};
+    this->root = new node{v, 1};//, nullptr};
     size++;
     return;
   }
@@ -78,7 +89,7 @@ void queue::enqueue(int v){
   }
   int k = ptr->key;
   k++;
-  ptr->next = new node{v, k, nullptr};
+  ptr->next = new node{v, k};//, nullptr};
   size++;
 }
 
@@ -228,8 +239,10 @@ int queue:: get_from_key(int k){
   return ptr->val;
 }
 
+#endif
 
-/*int main(){
+/*
+int main(){
 
 
   queue q(2);
@@ -282,4 +295,5 @@ int queue:: get_from_key(int k){
 
   return 0;
 }
+
 */
