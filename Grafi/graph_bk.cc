@@ -1,6 +1,6 @@
 //#include <iostream>
 #include "graph.h"
-#include "collapse.cc"
+//#include "collapse.cc"
 #include "adjacency_list.cc"
 //#include "DFS.cc"
 #include "queue.cc"
@@ -60,13 +60,10 @@ void Graph::insert_reacmat(int i, int j) { //i reaches j
   }
   else if (i==j){
     reac_mat[i+SIZE*j] = 1;
-    admat[i+SIZE*j] = 1;
   }
   else{
     reac_mat[i+SIZE*j] = -1;
     reac_mat[j+SIZE*i] = 1;
-    admat[i+SIZE*j] = 1;
-    admat[j+SIZE*i] = 1;
   }
 }
 
@@ -95,16 +92,15 @@ int main(){
 
   /*int s = 4;
     BFS(g1, s);*/
-  adjacency_list *ad= tarjan_scc(g1);
-  printf("\n====Printing adjacency list of the graph:====\n");
-  ad->print_list();
-  collapse(g1, ad);
-  printf("END\n");
+  //adjacency_list *ad =
+  tarjan_scc(g1);
+  //ad.print_list();
   //int* mn = (int*)malloc(SIZE*sizeof(int));
-  //collapse(g1, ad);
+  //collapse(g1, mn);
   //DFS(g1);
   //Dijkstra(g1);
 
   //free(mn);
   return 0;  
 }
+

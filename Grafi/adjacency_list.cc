@@ -35,6 +35,9 @@ public:
   void add_node(int v);
   void add_neighbor(int n, int v);
   bool node_already_present(int i);
+  /*adjacency_list& operator->() {
+    return *root;
+    };*/
   
 };
 
@@ -43,7 +46,7 @@ struct Empty_list{};
 bool adjacency_list::node_already_present(int i){
   if (size==0){
     printf("cannot check empty list!!!\n");
-   // throw Empty_list{};
+    return 0;// throw Empty_list{};
   }
   node* p = this->root;
   while(p->val!=i && p->next!=nullptr){
@@ -54,17 +57,18 @@ bool adjacency_list::node_already_present(int i){
 }
 
 void adjacency_list::print_list(){
+  printf("ciao\n");
   if (size==0){
     printf("cannot print empty list!\n");
     return;
   }
   node* p = this->root;
   while(p->next!=nullptr){
-    printf("(k=%i, v=%i), q= ", p->key, p->val);
+    printf("v=%i, ", p->val);
     p->neighbors.print_queue();
     p=p->next;
   }
-  printf("(k=%i, v=%i), q= ", p->key, p->val);
+  printf("v=%i, ", p->val);
    p->neighbors.print_queue();
 }
 
@@ -124,4 +128,5 @@ void adjacency_list::add_node(int v){
   a.add_neighbor(44,3);
   a.print_list();
   return 0;
-  }*/
+}
+*/

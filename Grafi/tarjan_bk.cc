@@ -19,7 +19,7 @@ void print_array(T* A, int dim){
 }
 
 
-int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, char* color, adjacency_list *sccs){
+int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, char* color, adjacency_list &sccs){
   printf("tarjan scc real, v=%i, time=%i\n", v, time);
   d[v] = time;
   lowlink[v] = time;
@@ -65,22 +65,22 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
     printf("--------->SCC for v=%i\n",v);
     w = q.dequeue_last_getting_val();
     fixed=w;
-    //if w not in scc precedenti -> maybe iterator over values
+    // if w not in scc precedenti -> maybe iterator over values
     //printf("sccs size=%i\n",sccs.return_size());
-    if (sccs->node_already_present(w)==0) {
-      sccs->add_node(w);
-    }
+    if (sccs.node_already_present(w)==0) sccs.add_node(w); 
     while(w!=v){
+      //sccs.enqueue(w);
       scc.enqueue(w);
       w = q.dequeue_last_getting_val();
-      sccs->add_neighbor(fixed,w); //qui puo` aggiungere neighbors al niente? sisi
+      sccs.add_neighbor(fixed,w); //qui puo` aggiungere neighbors al niente?
     }
+    //sccs.enqueue(w);
     scc.enqueue(w);
     // end if w not in scc precedenti
-    /*printf("printing scc\n");
+    printf("printing scc\n");
     scc.print_queue();
     printf("printing q\n");
-    q.print_queue();*/
+    q.print_queue();
   }
   #ifdef DEBUG
   scc.print_queue();
@@ -94,7 +94,7 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
 
 
 
-adjacency_list* tarjan_scc(Graph g){
+void tarjan_scc(Graph g){
   printf("tarjan scc\n");
   int* d = (int*)malloc(SIZE*sizeof(int));
   int* lowlink = (int*)malloc(SIZE*sizeof(int));
@@ -102,8 +102,7 @@ adjacency_list* tarjan_scc(Graph g){
   queue q;
   int edges=0;
   int time=0;
-  adjacency_list* sccs(new adjacency_list());
-  //adjacency_list sccs;
+  adjacency_list sccs;
   
   for (int i=0; i<SIZE; i++){
     for (int j=0; j<SIZE; j++){
@@ -115,18 +114,18 @@ adjacency_list* tarjan_scc(Graph g){
   }
   printf("time should be~=%d\n", edges/2+SIZE);
   
-  // for (int v=0; v<SIZE; v++){
-  int v=4;
+  for (int v=0; v<SIZE; v++){
     if (color[v]=='w'){
+      int v = 4;
       time = tarjan_scc_real(g, v, time, q,  d, lowlink, color, sccs);
     }
-    // }
+  }
   
   printf("time=%i\n", time);
-  //sccs->print_list();
+  sccs.print_list();
   free(d);
   free(lowlink);
   free(color);
 
-  return sccs;
+  // return *sccs;
 }
