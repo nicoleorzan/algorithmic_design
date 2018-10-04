@@ -1,5 +1,5 @@
 #include <iostream>
-#define SIZE 9
+#define SIZE 4
 
 #ifndef __GRAPH__
 #define __GRAPH__
@@ -13,7 +13,7 @@ class Graph{
  public:
   
   int *admat;
-  int* reac_mat;
+  int *reac_mat;
 
   Graph(){
     admat = (int*) malloc(SIZE*SIZE*sizeof(int) );
@@ -28,10 +28,11 @@ class Graph{
     //free(reac_mat);
   }
 
-  void print() const;
+  void print_admat() const;
   void print_reacmat() const;
   void insert_reacmat(int i, int j);		
   void clear();
+  int* get_admat() {return this->admat;};
 
 }; // end class Graph
 

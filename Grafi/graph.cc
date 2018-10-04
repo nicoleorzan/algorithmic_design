@@ -8,7 +8,9 @@
 //#include "BFS_with_queue.cc"
 //#include "dijkstra.cc"
 
-void Graph::print() const {
+#define SIZE 4
+
+void Graph::print_admat() const {
   printf("print graph adjacecncy matrix:\n");
     for(int i=0; i<SIZE; i++){
       for(int j=0; j<SIZE; j++){
@@ -42,17 +44,6 @@ void Graph::insert_admat(int i, int j) {
   }
 }
 
-/*void Graph::insert_admat(int i, int j) {
-  if ((i<0 || i>=SIZE) && (j<0 || j>=SIZE)){
-    printf("size out of the limit!!");
-    return;
-  }
-  else {
-    admat[i+SIZE*j] = 1;
-    admat[j+SIZE*i] = 1;
-  }
-}*/
-
 void Graph::insert_reacmat(int i, int j) { //i reaches j
   if ((i<=-SIZE || i>=SIZE) && (j<=-SIZE || j>=SIZE)){
     printf("size out of the limit!!");
@@ -76,13 +67,18 @@ void Graph::clear(){
   free(reac_mat);
 }
 
+adjacency_list* reverse(adjacency_list * old){
+ adjacency_list* newlist(new adjacency_list());
+ node *p = old->root;
+}
+
 int main(){
   Graph g1;
   //g1.print();
-  g1.insert_reacmat(4,8); 
-  g1.insert_reacmat(8,3); 
-  g1.insert_reacmat(3,5); 
-  g1.insert_reacmat(3,4); 
+  g1.insert_reacmat(1,2); 
+  g1.insert_reacmat(2,3); 
+  g1.insert_reacmat(3,1); 
+  g1.insert_reacmat(0,1); 
   //g1.insert_reacmat(1,4); //1 can reach 4
   //g1.insert_reacmat(4,2); //4 can reach 2
   //g1.insert_reacmat(2,1); //2 can reach 1
@@ -91,20 +87,23 @@ int main(){
   //g1.insert_admat(4,1);
   //g1.insert_admat(1,2);
   g1.print_reacmat();
-  g1.clear();
-
+  g1.print_admat();
+  
   /*int s = 4;
     BFS(g1, s);*/
-  adjacency_list *ad= tarjan_scc(g1);
-  printf("\n====Printing adjacency list of the graph:====\n");
-  ad->print_list();
-  collapse(g1, ad);
-  printf("END\n");
-  //int* mn = (int*)malloc(SIZE*sizeof(int));
-  //collapse(g1, ad);
   //DFS(g1);
+  adjacency_list *ad= tarjan_scc(g1);
+  printf("\n==== Printing adjacency list of the graph: ====\n");
+  ad->print_list();
+  //let's reverse the sccs:
+
+  
+  // adjacency_list *adjr = collapse(g1, ad);
+  //printf("\n==== Printing adjr of the graph: ====\n");
+  //adjr->print_list();
+  printf("\nEND\n");
+  
   //Dijkstra(g1);
 
-  //free(mn);
   return 0;  
 }

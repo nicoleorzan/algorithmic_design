@@ -115,12 +115,12 @@ adjacency_list* tarjan_scc(Graph g){
   }
   printf("time should be~=%d\n", edges/2+SIZE);
   
-  // for (int v=0; v<SIZE; v++){
-  int v=4;
+  for (int v=0; v<SIZE; v++){
+    //int v=0;
     if (color[v]=='w'){
       time = tarjan_scc_real(g, v, time, q,  d, lowlink, color, sccs);
     }
-    // }
+ }
   
   printf("time=%i\n", time);
   //sccs->print_list();
