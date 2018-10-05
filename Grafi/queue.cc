@@ -4,36 +4,60 @@
 #ifndef QUEUE
 #define QUEUE
 
+
 class queue{
 
-   struct node{
 
-   public:
-     int val;
-     int key;
-     node* next;
+  
+  struct node{
 
-     node(int v, int k): val{v}, key{k}, next{nullptr} {}
+  public:
+    int val;
+    int key;
+    node* next;
+
+    node(int v, int k): val{v}, key{k}, next{nullptr} {}
+    node(const node& n):  val{n.val}, key{n.key}, next{n.next} {};
+    void copy_node(queue& q){
+      if (this->next!=nullptr){
+	q.enqueue(next->val);
+	this->next->copy_node(q);
+      }
+    }
 
   };
-
+  
   node* root;
   int size;
 
 public:
+  
   queue(){
     size = 0;
-    //root = nullptr;
+    root = nullptr;
   };
   queue(int v) {
     size = 1;
-    root = new node{v, 1};//, nullptr};
+    root = new node{v, 1};
+  };
+  //copy constructor
+  queue(const queue& q) {
+    if (q.size!=0){
+      size=1;
+      root = new node{q.root->val, 1};
+      q.root->copy_node(*this);
+    }
   };
   ~queue(){};// {delete root;};
+  int operator*() {
+    return size;
+  }
+
   
   int return_size() { return size; };
   void print_queue();
   void enqueue(int v);
+  void enqueue_queue(queue *q);
   void dequeue(int k);
   int dequeue_last_getting_key();
   int dequeue_last_getting_val();
@@ -119,15 +143,36 @@ void queue::print_queue(){
   printf("\n");
 }
 
-void queue::enqueue(int v){
-#ifdef DEBUG
-  printf("enqueuing val=%i\n", v);
-#endif
+void queue::enqueue_queue(queue *q){
   if (size==0){
+    //printf("enqueuing nothing\n");
+    this->root=q->root;
+    size = q->return_size();
+    return;
+  }
+  node *ptr = this->root;
+  while(ptr->next!=nullptr){
+    ptr=ptr->next;
+  }
+  // int k = ptr->key;
+  //k++;
+  ptr->next = q->root;
+  size = size + q->return_size();
+  
+}
+
+void queue::enqueue(int v){
+  //#ifdef DEBUG
+  // printf("enqueuing\n");
+  //#endif
+  // printf("queue size = %i\n", size);
+  if (size==0){
+    printf("queue size==0\n");
     this->root = new node{v, 1};//, nullptr};
     size++;
     return;
   }
+  //printf("queue size!=0\n");
   node *ptr = this->root;
   while(ptr->next!=nullptr){
     ptr=ptr->next;
@@ -286,8 +331,8 @@ int queue:: get_from_key(int k){
 
 #endif
 
-
-/*int main(){
+/*
+int main(){
 
 
   queue q(2);
@@ -342,6 +387,13 @@ int queue:: get_from_key(int k){
     it = ed.find(j);
     //printf("val = %i\n",it->value);
   }
+
+  printf("\nCOPY TEST\n");
+  queue q2 = ed;
+  printf("original one: \n");
+  ed.print_queue();
+  printf("copied one: \n");
+  q2.print_queue();
   
 
   return 0;

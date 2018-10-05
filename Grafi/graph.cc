@@ -67,10 +67,10 @@ void Graph::clear(){
   free(reac_mat);
 }
 
-adjacency_list* reverse(adjacency_list * old){
+/*adjacency_list* reverse(adjacency_list * old){
  adjacency_list* newlist(new adjacency_list());
  node *p = old->root;
-}
+}*/
 
 int main(){
   Graph g1;
