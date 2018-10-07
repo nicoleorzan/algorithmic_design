@@ -32,7 +32,7 @@ void compute_prefix_function(int* pi, char* P){
   
 }
 
-int knutt_morris_pratt(char *T, char* P){
+int knuth_morris_pratt(char *T, char* P){
   printf("\n====knutt-morris-pratt====\n");
 
   int* pi = (int*)malloc(strlen(P)*sizeof(int));
@@ -63,7 +63,7 @@ int knutt_morris_pratt(char *T, char* P){
        i++;
      }
      if (i==strlen(P)) {
-       printf("pattern occurs with shift %i", s-i+1);
+       printf("pattern occurs with shift %i\n", s-i+1);
        return s-i+1;
      }
    }
@@ -83,7 +83,7 @@ int main(){
   char T[25]{"ABCXABCDABXABCDABCDABCY"};
   char P[10]="ABCDABCY";
   printf("O(|T|+|P|) = %zu\n", strlen(T) + strlen(T));
-  int s = knutt_morris_pratt(T, P);
+  int s = knuth_morris_pratt(T, P);
 
    std::cout<<"from SS="<<s<<" I found the string:\n";
   
