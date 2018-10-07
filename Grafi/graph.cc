@@ -1,7 +1,8 @@
 //#include <iostream>
 #include "graph.h"
 #include "collapse.cc"
-#include "adjacency_list.cc"
+#include "adjacency_list_bk.cc"
+#include "../BinaryHeap/binaryheap.h"
 //#include "DFS.cc"
 #include "queue.cc"
 #include "tarjan.cc"
@@ -78,7 +79,7 @@ int main(){
   g1.insert_reacmat(1,2); 
   g1.insert_reacmat(2,3); 
   g1.insert_reacmat(3,1); 
-  g1.insert_reacmat(0,1); 
+  g1.insert_reacmat(1,0); 
   //g1.insert_reacmat(1,4); //1 can reach 4
   //g1.insert_reacmat(4,2); //4 can reach 2
   //g1.insert_reacmat(2,1); //2 can reach 1
@@ -93,7 +94,7 @@ int main(){
     BFS(g1, s);*/
   //DFS(g1);
   adjacency_list *ad= tarjan_scc(g1);
-  printf("\n==== Printing adjacency list of the graph: ====\n");
+  printf("\n==== Printing strong connected components of the graph: ====\n");
   ad->print_list();
   //let's reverse the sccs:
 
@@ -102,8 +103,10 @@ int main(){
   //printf("\n==== Printing adjr of the graph: ====\n");
   //adjr->print_list();
   printf("\nEND\n");
-  
-  //Dijkstra(g1);
+
+  //printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
+  //int s=1;
+  //Dijkstra(g1, s);
 
   return 0;  
 }

@@ -207,7 +207,7 @@ void adjacency_list::reverse(){//not working
 }
 
 #endif
-
+/*
 int main(){
 
   adjacency_list a;
@@ -229,3 +229,4 @@ int main(){
   a.reverse();
   return 0;
   }
+*/

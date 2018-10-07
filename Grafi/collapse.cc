@@ -5,7 +5,7 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
   int mn_size = mn->return_size();
   int *vtom = (int*)malloc(SIZE*sizeof(int));
   adjacency_list* adjr(new adjacency_list());
-  queue coda;
+  queue *coda;
 
   int i=0;
   //printf("mn_size=%i\n",mn_size);
@@ -18,15 +18,15 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
 	adjr->add_node(i);
 	printf("---> got coda\n");
 	coda = mn->get_node(vv)->neighbors;
-	coda.print_queue();
-	if (coda.is_empty()==0){
-	  printf("coda size=%i\n",coda.return_size());
-	  for (int v=0; v<coda.return_size(); v++){
+	coda->print_queue();
+	if (coda->is_empty()==0){
+	  printf("coda size=%i\n",coda->return_size());
+	  for (int v=0; v<coda->return_size(); v++){
 	    printf("i=%i\n",i);
-	    printf("coda(v=%i)= %i\n",v,coda.get_from_key(v));
-	    vtom[coda.get_from_key(v)] = i;
+	    printf("coda(v=%i)= %i\n",v,coda->get_from_key(v));
+	    vtom[coda->get_from_key(v)] = i;
 	    adjr->add_node(i);
-	    printf("filling vtom[%i] = %i \n", coda.get_from_key(v), i);
+	    printf("filling vtom[%i] = %i \n", coda->get_from_key(v), i);
 	  }
 	  i++;
 	}

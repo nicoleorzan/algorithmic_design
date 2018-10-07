@@ -1,4 +1,4 @@
-//#define DEBUG
+#define DEBUG
 #include "adjacency_list.cc"
 #include "queue.cc"
 
@@ -20,7 +20,7 @@ void print_array(T* A, int dim){
 
 
 int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, char* color, adjacency_list *sccs){
-  printf("tarjan scc real, v=%i, time=%i\n", v, time);
+  printf("---tarjan scc real, v=%i, time=%i---\n", v, time);
   d[v] = time;
   lowlink[v] = time;
   time++;
@@ -65,7 +65,6 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
     printf("--------->SCC for v=%i\n",v);
     w = q.dequeue_last_getting_val();
     fixed=w;
-    //if w not in scc precedenti -> maybe iterator over values
     //printf("sccs size=%i\n",sccs.return_size());
     if (sccs->node_already_present(w)==0) {
       sccs->add_node(w);
@@ -77,13 +76,13 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
     }
     scc.enqueue(w);
     // end if w not in scc precedenti
-    /*printf("printing scc\n");
+    printf("printing scc\n");
     scc.print_queue();
     printf("printing q\n");
-    q.print_queue();*/
+    q.print_queue();
   }
   #ifdef DEBUG
-  scc.print_queue();
+  //scc.print_queue();
   q.print_queue();
   print_char(color, SIZE);
   printf("exiting\n");
@@ -95,7 +94,7 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
 
 
 adjacency_list* tarjan_scc(Graph g){
-  printf("tarjan scc\n");
+  printf("====Tarjan scc====\n");
   int* d = (int*)malloc(SIZE*sizeof(int));
   int* lowlink = (int*)malloc(SIZE*sizeof(int));
   char* color = (char*)malloc(SIZE*sizeof(char));
@@ -103,7 +102,6 @@ adjacency_list* tarjan_scc(Graph g){
   int edges=0;
   int time=0;
   adjacency_list* sccs(new adjacency_list());
-  //adjacency_list sccs;
   
   for (int i=0; i<SIZE; i++){
     for (int j=0; j<SIZE; j++){
@@ -116,14 +114,14 @@ adjacency_list* tarjan_scc(Graph g){
   printf("time should be~=%d\n", edges/2+SIZE);
   
   for (int v=0; v<SIZE; v++){
-    //int v=0;
+    //  int v=1;
     if (color[v]=='w'){
       time = tarjan_scc_real(g, v, time, q,  d, lowlink, color, sccs);
     }
- }
+  }
   
   printf("time=%i\n", time);
-  //sccs->print_list();
+  sccs->print_list();
   free(d);
   free(lowlink);
   free(color);

@@ -22,7 +22,7 @@ struct node{
       queue *q = this->next->neighbors;
       if (this->next->neighbors->is_empty()!=1){
 	a.get_node(next->val)->neighbors->print_queue();
-	a.get_node(next->val)->neighbors = new queue(*q);
+	a.get_node(next->val)->neighbors =  new queue(*q);
 	printf("a after\n");
 	a.get_node(next->val)->neighbors->print_queue();
 	}
@@ -232,7 +232,7 @@ void adjacency_list::reverse(){//not working
 }
 
 #endif
-
+/*
 int main(){
 
   adjacency_list a;
@@ -257,10 +257,11 @@ int main(){
   //a.print_list();
   //queue coda = a.get_node(44)->neighbors;
   //coda.print_queue();
-  /* printf("STARTING LIST:\n");
+  printf("STARTING LIST:\n");
   a.detach_last();
   a.print_list();
   printf("\n\nREVERSING\n");
-  a.reverse();*/
+  a.reverse();
   return 0;
   }
+*/
