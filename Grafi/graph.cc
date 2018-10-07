@@ -1,7 +1,7 @@
 //#include <iostream>
 #include "graph.h"
-#include "collapse.cc"
-#include "adjacency_list_bk.cc"
+//#include "collapse.cc"
+#include "adjacency_list.cc"
 #include "../BinaryHeap/binaryheap.h"
 //#include "DFS.cc"
 #include "queue.cc"
@@ -9,7 +9,7 @@
 //#include "BFS_with_queue.cc"
 //#include "dijkstra.cc"
 
-#define SIZE 4
+//#define SIZE 5
 
 void Graph::print_admat() const {
   printf("print graph adjacecncy matrix:\n");
@@ -42,6 +42,8 @@ void Graph::insert_admat(int i, int j) {
   else {
     admat[i+SIZE*j] = 1;
     admat[j+SIZE*i] = 1;
+    admat[j+SIZE*j] = 1; //il nodo puo` sempre ragigungere se stesso
+    admat[i+SIZE*i] = 1; //il nodo puo` sempre ragigungere se stesso
   }
 }
 
@@ -50,15 +52,19 @@ void Graph::insert_reacmat(int i, int j) { //i reaches j
     printf("size out of the limit!!");
     return;
   }
-  else if (i==j){
+   else if (i==j){
     reac_mat[i+SIZE*j] = 1;
     admat[i+SIZE*j] = 1;
   }
   else{
     reac_mat[i+SIZE*j] = -1;
     reac_mat[j+SIZE*i] = 1;
+    reac_mat[j+SIZE*j] = 1; //il nodo puo` sempre ragigungere se stesso
+    reac_mat[i+SIZE*i] = 1;
     admat[i+SIZE*j] = 1;
     admat[j+SIZE*i] = 1;
+    admat[j+SIZE*j] = 1; //il nodo puo` sempre ragigungere se stesso
+    admat[i+SIZE*i] = 1; //il nodo puo` sempre ragigungere se stesso
   }
 }
 
@@ -75,38 +81,65 @@ void Graph::clear(){
 
 int main(){
   Graph g1;
-  //g1.print();
-  g1.insert_reacmat(1,2); 
   g1.insert_reacmat(2,3); 
-  g1.insert_reacmat(3,1); 
-  g1.insert_reacmat(1,0); 
+  g1.insert_reacmat(3,4); 
+  g1.insert_reacmat(4,2); 
+  g1.insert_reacmat(2,1);
+  g1.insert_reacmat(2,7); 
   //g1.insert_reacmat(1,4); //1 can reach 4
   //g1.insert_reacmat(4,2); //4 can reach 2
   //g1.insert_reacmat(2,1); //2 can reach 1
-  //g1.insert_admat(1,3);
-  //g1.insert_admat(4,5);
-  //g1.insert_admat(4,1);
-  //g1.insert_admat(1,2);
   g1.print_reacmat();
   g1.print_admat();
   
   /*int s = 4;
     BFS(g1, s);*/
   //DFS(g1);
+  
   adjacency_list *ad= tarjan_scc(g1);
   printf("\n==== Printing strong connected components of the graph: ====\n");
   ad->print_list();
   //let's reverse the sccs:
+  int * scc_arr = (int*) malloc (SIZE*SIZE*sizeof(int));
+  int * reversed_scc = (int*) malloc (SIZE*SIZE*sizeof(int));
+  ad->list_to_array(scc_arr);
+
+  int k=0;
+  for (int i=SIZE-1; i>=0; i--){
+    if (scc_arr[i]!=0){
+    for (int j=0; j<SIZE; j++){
+      reversed_scc[k+SIZE*j] = scc_arr[i+SIZE*j];
+      }
+    k++;
+    }
+  }
+  // adjacency_list* rev = new(adjacency_list);
+  printf("REVERSED SCC:\n");
+  for (int i=0; i<SIZE; i++){
+    if (reversed_scc[i]!=0){
+      //rev->add_node(reversed_scc[i]);
+      for (int j=0; j<SIZE; j++){
+	if (reversed_scc[i+SIZE*j]!=0){
+	  printf("v=%i ", reversed_scc[i+SIZE*j]);
+	  //rev->add_neighbor(reversed_scc[i],reversed_scc[i+SIZE*j]);
+	}
+      }
+    }
+    printf("\n");
+  }
+  //printf("REVERSED SCC:\n");
+  //rev->print_list();
 
   
-  // adjacency_list *adjr = collapse(g1, ad);
-  //printf("\n==== Printing adjr of the graph: ====\n");
+  //adjacency_list *adjr = collapse(g1, ad);
+  //printf("\n==== Printing adjrh: ====\n");
   //adjr->print_list();
   printf("\nEND\n");
 
   //printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
   //int s=1;
   //Dijkstra(g1, s);
-
+  free(reversed_scc);
+  free(scc_arr);
   return 0;  
 }

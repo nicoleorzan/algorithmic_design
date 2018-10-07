@@ -65,6 +65,7 @@ public:
   bool node_is_present(int v);
   node* get_node(int v);
   node* detach_last();
+  void list_to_array(int *arr);
   void reverse();
   /*adjacency_list& operator->() {
     return *root;
@@ -74,6 +75,26 @@ public:
 
 struct Empty_list{};
 
+void adjacency_list::list_to_array(int *arr){
+  node *ptr =this->root;
+  int i=0,  size_arr = 0;
+  queue *q;
+  int * tmp = (int*)malloc(SIZE*sizeof(int));
+  while(ptr!=nullptr){
+    arr[i] = ptr->val;
+    if (ptr->neighbors->is_empty()!=1){
+      q = ptr->neighbors;
+      //q->print_queue();
+      size_arr = q->queue_to_array(tmp);
+      for (int k=0; k<size_arr; k++){
+        arr[i+SIZE*(k+1)] = tmp[k];
+      }
+    }
+    i++;
+    ptr=ptr->next;
+  }
+  free(tmp);
+}
 
 void adjacency_list::add_queue(int n, queue *q){
   if (size==0) return;
@@ -158,7 +179,7 @@ adjacency_list::node* adjacency_list::get_node(int v){
 
 
 void adjacency_list::add_node(int v){
-  //printf("add node\n");
+  printf("add node\n");
   if (size==0){
     this->root = new node{1,v};
     size++;

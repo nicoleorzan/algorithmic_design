@@ -1,6 +1,6 @@
 #include "adjacency_list.cc"
 
-adjacency_list* collapse(Graph g, adjacency_list *mn){
+adjacency_list* collapse(Graph g,int *mn, int mn_size){
   printf("\n========collapse=======\n");
   int mn_size = mn->return_size();
   int *vtom = (int*)malloc(SIZE*sizeof(int));

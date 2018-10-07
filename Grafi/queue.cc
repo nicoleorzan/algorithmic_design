@@ -55,6 +55,7 @@ public:
 
   
   int return_size() { return size; };
+  node* get_root() { return root;};
   void print_queue();
   void enqueue(int v);
   void enqueue_queue(queue *q);
@@ -63,6 +64,7 @@ public:
   int dequeue_last_getting_val();
   int get_from_key(int k);
   int get_head();
+  int queue_to_array(int * arr);
   int pop();
   node* get_last();
   node* get_penultimate();
@@ -129,6 +131,18 @@ int queue::get_head(){
   }
   else throw Empty_queue{};
 }
+
+int queue::queue_to_array(int *arr){
+  node *ptr = this->root;
+  int i=0;
+  while(ptr!=nullptr){
+    arr[i] = ptr->val;
+    i++;
+    ptr=ptr->next;
+  }
+  return i;
+}
+
 void queue::print_queue(){
   if (size==0) {
     printf("queue is empty\n");

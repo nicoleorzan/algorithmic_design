@@ -1,10 +1,11 @@
-#define DEBUG
+//#define DEBUG
 #include "adjacency_list.cc"
 #include "queue.cc"
+// non posso usare il valore 0 nel grafo!!
 
 template<typename T>
 void print_char(T* A, int dim){
-  for(int i=0; i<dim; i++){
+  for(int i=1; i<dim; i++){
     printf("%c ",A[i]);
   }
   printf("\n");
@@ -12,7 +13,7 @@ void print_char(T* A, int dim){
 
 template<typename T>
 void print_array(T* A, int dim){
-  for(int i=0; i<dim; i++){
+  for(int i=1; i<dim; i++){
     printf("%i ",A[i]);
   }
   printf("\n");
@@ -33,7 +34,7 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
 #endif
 
 
-  for (int w=0; w<SIZE; w++){
+  for (int w=1; w<SIZE; w++){
     if( g.reac_mat[w+SIZE*v]==1){
       if (color[w]=='w'){
 	time = tarjan_scc_real(g, w, time, q, d, lowlink, color, sccs);
@@ -103,8 +104,8 @@ adjacency_list* tarjan_scc(Graph g){
   int time=0;
   adjacency_list* sccs(new adjacency_list());
   
-  for (int i=0; i<SIZE; i++){
-    for (int j=0; j<SIZE; j++){
+  for (int i=1; i<SIZE; i++){
+    for (int j=1; j<SIZE; j++){
       if (g.admat[i+SIZE*j]!=0) edges++;
     }
     color[i] = 'w';
@@ -113,9 +114,9 @@ adjacency_list* tarjan_scc(Graph g){
   }
   printf("time should be~=%d\n", edges/2+SIZE);
   
-  for (int v=0; v<SIZE; v++){
+  for (int v=1; v<SIZE; v++){
     //  int v=1;
-    if (color[v]=='w'){
+    if (color[v]=='w' && g.admat[v+SIZE*v]!=0){
       time = tarjan_scc_real(g, v, time, q,  d, lowlink, color, sccs);
     }
   }

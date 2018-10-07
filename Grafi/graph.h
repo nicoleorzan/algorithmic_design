@@ -1,5 +1,5 @@
 #include <iostream>
-#define SIZE 4
+#define SIZE 8
 
 #ifndef __GRAPH__
 #define __GRAPH__
