@@ -4,17 +4,20 @@
 
 int pm_naive(char* T, char* P){
 
-  int i=0;
-  int ss;
+  unsigned int i=0;
+  int ss=-99;
   int len = strlen(T);
-  for (int s = 0 ; s < ( strlen(T) - strlen(P)  ); s++){
+  printf("strlen(T)=%i, ",len);
+  printf("strlen(P)=%zu\n",strlen(P));
+  for (unsigned int s = 0; s <= ( strlen(T) - strlen(P) ); s++){
     i = 1;
-    std::cout<<"s= "<<s<<"\n";
+    //std::cout<<"s= "<<s<<"\n";
     while (i<=strlen(P) && P[i]==T[s+i]){
       i++;
-      std::cout<<"i= "<<i<<"\n";
+      //std::cout<<"i= "<<i<<"\n";
     }
-    if ( i>strlen(P) ) {
+    if ( i>=strlen(P) ) {
+      //printf("here\n");
       ss=s;
     }
   }
@@ -32,26 +35,13 @@ int main(){
   
   char T[25]{"ABCXABCDABXABCDABCDABCY"};
   char P[10]="ABCDABCY";
+  printf("O(|T|*|P|) = %zu\n", strlen(T)*strlen(T));
   int ss = pm_naive(T, P);
-  std::cout<<ss<<"\n";
-  /* char a[10];
-  std::cin>>a;
-  std::cout<<a<<"\n";*/
-    
+  std::cout<<"from SS="<<ss<<" I found the string:\n";
+  
+  for (unsigned int i=ss; i<strlen(T);i++){
+    std::cout<<*(T+i);
+  }
+  printf("\n");
   return 0;
 }
-
-
-
-
-
-
-
-
-  /*const char *const pszSource = "This is an example.";
-  const char *pszChar = pszSource;
-
-  while (pszChar != NULL && *pszChar != '\0'){
-    printf("%s", pszChar);
-    ++pszChar;
-    }*/

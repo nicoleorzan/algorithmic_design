@@ -181,8 +181,8 @@ void queue::enqueue(int v){
   //#endif
   // printf("queue size = %i\n", size);
   if (size==0){
-    printf("queue size==0\n");
-    this->root = new node{v, 1};//, nullptr};
+    //printf("queue size==0\n");
+    this->root = new node{v, 1};
     size++;
     return;
   }
@@ -193,7 +193,7 @@ void queue::enqueue(int v){
   }
   int k = ptr->key;
   k++;
-  ptr->next = new node{v, k};//, nullptr};
+  ptr->next = new node{v, k};
   size++;
 }
 

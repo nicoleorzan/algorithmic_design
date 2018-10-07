@@ -133,8 +133,14 @@ void adjacency_list::print_list(){
 struct Missing_value{};
 
 void adjacency_list::add_neighbor(int n, int v){
-  printf("add neighbor\n");
-  if (size==0) return;
+  //printf("add neighbor\n");
+  if (size==0) {
+    this->root = new node{1,n};
+    this->root->neighbors = new queue();
+    this->root->neighbors->enqueue(v);
+    size++;
+    return;
+  }
   node* ptr = this->root;
   while(ptr->val!=n && ptr->next!=nullptr){
     ptr = ptr->next;
@@ -142,8 +148,13 @@ void adjacency_list::add_neighbor(int n, int v){
   if (ptr->val==n){
     ptr->neighbors->enqueue(v);
   }
-  //if (ptr->next!=nullptr) throw Missing_value{};
- 
+  else{
+    int k = ptr->key;
+    k++;
+    ptr->next = new node{k, n};
+    ptr->next->neighbors = new queue();
+    this->root->neighbors->enqueue(v);
+  } 
 }
 
 adjacency_list::node* adjacency_list::get_last_node(){
@@ -179,7 +190,7 @@ adjacency_list::node* adjacency_list::get_node(int v){
 
 
 void adjacency_list::add_node(int v){
-  printf("add node\n");
+  // printf("add node\n");
   if (size==0){
     this->root = new node{1,v};
     size++;
@@ -220,7 +231,7 @@ void adjacency_list::reverse(){//not working
   adjacency_list* t = new adjacency_list(*this);
   queue *qqq = new queue();
   node *ptr_t;
-  node *ptr = this->root;
+  //node *ptr = this->root;
   printf("\nBEFORE\n");
   this->print_list();
   t->print_list();

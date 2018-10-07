@@ -75,7 +75,7 @@ class BinaryHeap{
     num_of_elements=0;
     max_size = container.size();
     this->container = new T[max_size];
-    for(typename C<T, std::allocator<T>>::const_iterator it=std::cbegin(container); it!=std::cend(container); ++it){
+    for(typename C<T, std::allocator<T>>::const_iterator it=cbegin(container); it!=cend(container); ++it){
       this->container[num_of_elements++] = *it;
     }
   }

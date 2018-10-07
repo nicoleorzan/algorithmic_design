@@ -1,7 +1,10 @@
 #include <stdlib.h>
 #include <iostream>
-#include <binaryheap.h>
+#include "binaryheap.h"
 #include <vector>
+
+#ifndef BINH
+#define BINH
 
 template<typename T>
 class compar{
@@ -13,6 +16,9 @@ class compar{
     return 0;
   }
 };
+
+#endif
+
 
 int main(){
 
@@ -32,4 +38,4 @@ int main(){
   heap.delete_root();
   
   return 0;  
-}
+  }

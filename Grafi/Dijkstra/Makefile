@@ -1,0 +1,22 @@
+CXX = c++
+CFLAGS = -std=c++11 -Wall -Wextra
+IFLAGS = -I include
+
+all: main
+
+src/btree.o:  src/btree.cc 
+	$(CXX) -c -o $@ $^ $(CFLAGS) $(IFLAGS)
+
+main: main.o src/btree-d.o
+	$(CXX) -o $@ $^ $(CFLAGS) $(IFLAGS)
+
+main.o: main.cc
+	$(CXX) -c -o $@ $^ $(CFLAGS) $(IFLAGS)
+
+src/btree-d.o: src/btree.cc
+	$(CXX) -c -o $@ $^ $(CFLAGS) $(IFLAGS)
+
+clean:
+	@rm -rf *~ *.o src/*.o main
+
+.PHONY: clean all
