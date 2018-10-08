@@ -3,6 +3,9 @@
 #include "queue.cc"
 // non posso usare il valore 0 nel grafo!!
 
+
+#ifndef PRINT
+#define PRINT
 template<typename T>
 void print_char(T* A, int dim){
   for(int i=1; i<dim; i++){
@@ -18,7 +21,7 @@ void print_array(T* A, int dim){
   }
   printf("\n");
 }
-
+#endif
 
 int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, char* color, adjacency_list *sccs){
   printf("---tarjan scc real, v=%i, time=%i---\n", v, time);

@@ -1,6 +1,3 @@
-//#include <graph.h>
-#define SIZE 5
-
 template<typename T>
 void print_char(T A){
   for(int i=0; i<SIZE; i++){
