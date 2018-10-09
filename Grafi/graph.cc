@@ -1,11 +1,11 @@
 #include "graph.h"
 #include "queue.cc"
 #include "adjacency_list.cc"
-//#include "../BinaryHeap/binaryheap.h"
 #include "DFS.cc"
 #include "BFS.cc"
 #include "tarjan.cc"
-//#include "coll.cc"
+#include "collapse_list.cc"
+//#include "../BinaryHeap/binaryheap.h"
 //#include "dijkstra.cc"
 #include "floyd_warshall.cc"
 
@@ -101,73 +101,55 @@ void Graph::clear(){
 }
 
 int main(){
+  
   Graph g1;
-  /* \\for collapse:
+  
+  /* printf("\n==== BFS and DFS: ====\n");
+     g1.insert_reacmat(2,3); 
+     g1.insert_reacmat(3,4); 
+     g1.insert_reacmat(4,2); 
+     g1.insert_reacmat(2,1);
+     g1.insert_reacmat(2,7);
+     g1.print_reacmat();
+     g1.print_admat();
+  
+     int s = 4;
+     BFS(g1, s);
+     DFS(g1);*/
+
+
+  printf("\n==== TARJAN: ====\n");
   g1.insert_reacmat(2,3); 
   g1.insert_reacmat(3,4); 
   g1.insert_reacmat(4,2); 
   g1.insert_reacmat(2,1);
   g1.insert_reacmat(2,7);
-  
   g1.print_reacmat();
-  g1.print_admat();*/
-  
-  /*printf("\n==== BFS and DFS: ====\n");
-   int s = 4;
-    BFS(g1, s);*/
-  //DFS(g1);
-  
+  g1.print_admat();
   adjacency_list *ad= tarjan_scc(g1);
   printf("\n==== Printing strong connected components of the graph: ====\n");
   ad->print_list();
-  //let's reverse the sccs:
-  int * scc_arr = (int*) malloc (SIZE*SIZE*sizeof(int));
-  int * reversed_scc = (int*) malloc (SIZE*SIZE*sizeof(int));
-  ad->list_to_array(scc_arr);
-
-  int k=0;
-  for (int i=SIZE-1; i>=0; i--){
-    if (scc_arr[i]!=0){
-    for (int j=0; j<SIZE; j++){
-      reversed_scc[k+SIZE*j] = scc_arr[i+SIZE*j];
-      }
-    k++;
-    }
-  }
-  //adjacency_list* rev = new(adjacency_list);
-  int size_reversed_scc=0;
-  printf("REVERSED SCC:\n");
-  for (int i=0; i<SIZE; i++){
-    if (reversed_scc[i]!=0){
-      size_reversed_scc++;
-      printf("v=%i ", reversed_scc[i]);
-      //rev->add_node(reversed_scc[i]);
-      for (int j=1; j<SIZE; j++){
-	if (reversed_scc[i+SIZE*j]!=0){
-	  printf("v=%i ", reversed_scc[i+SIZE*j]);
-	  //printf("adding to %i\n", reversed_scc[i]);
-	  //rev->add_neighbor(reversed_scc[i],reversed_scc[i+SIZE*j]);
-	}
-      }
-      printf("\n");
-    }
-  }
-  //printf("REVERSED LIST SCC:\n");
-  //rev->print_list();
-
+  printf("\nREVERSING SCC\n");
+  ad->reverse();
+  ad->print_list();
   
+  printf("\n!!!!!!!!!!!!!!!!! Collapse !!!!!!!!!!!!!!!!\n");
   //adjacency_list *adjr =
   //collapse(g1, reversed_scc, size_reversed_scc);
   //printf("\n==== Printing adjrh: ====\n");
   //adjr->print_list();
 
+
+  
   /*printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
   int s=1;
   Dijkstra(g1, s);
   free(reversed_scc);
   free(scc_arr);*/
 
-  printf("\n!!!!!!!!!!!!!!!!! Floyd Warshall  !!!!!!!!!!!!!!!!\n");
+
+  
+  /*printf("\n!!!!!!!!!!!!!!!!! Floyd Warshall  !!!!!!!!!!!!!!!!\n");
   g1.insert_reacmat(1,6);
   g1.insert_reacmat(1,3);
   g1.insert_reacmat(1,4);
@@ -198,12 +180,10 @@ int main(){
   g1.insert_weight(5,8,2);
  
   g1.print_weights();
-  printf("size of the graph= %i\n",SIZE);
-
-  
+  printf("size of the graph= %i\n",SIZE);  
   int * W = g1.get_weight_mat();
 
-  floyd_warshall(W);
+  floyd_warshall(W);*/
   
   printf("END\n");
   return 0;  

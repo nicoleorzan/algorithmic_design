@@ -16,15 +16,11 @@ struct node{
   //bnode copy constructor
   node(const node& n): key{n.key}, val{n.val}, neighbors{n.neighbors}, next{n.next} {};
   void copy_node(adjacency_list& a){
-    printf("\nCOPY NODE\n");
     if (this->next!=nullptr){
       a.add_node(next->val);
       queue *q = this->next->neighbors;
       if (this->next->neighbors->is_empty()!=1){
-	a.get_node(next->val)->neighbors->print_queue();
 	a.get_node(next->val)->neighbors =  new queue(*q);
-	printf("a after\n");
-	a.get_node(next->val)->neighbors->print_queue();
 	}
       this->next->copy_node(a);
     }
@@ -122,11 +118,11 @@ void adjacency_list::print_list(){
   }
   node* p = this->root;
   while(p->next!=nullptr){
-    printf("v=%i, ", p->val);
+    printf("(k=%i, v=%i), ",  p->key, p->val);
     p->neighbors->print_queue();
     p=p->next;
   }
-  printf("v=%i, ", p->val);
+  printf("(k=%i, v=%i), ", p->key, p->val);
    p->neighbors->print_queue();
 }
 
@@ -227,43 +223,44 @@ adjacency_list::node* adjacency_list::detach_last(){
 }
 
 void adjacency_list::reverse(){//not working
-  if (this->size==0) return;
   adjacency_list* t = new adjacency_list(*this);
   queue *qqq = new queue();
   node *ptr_t;
-  //node *ptr = this->root;
-  printf("\nBEFORE\n");
-  this->print_list();
-  t->print_list();
+  printf("in reversing\n");
 
   qqq = t->get_last_node()->neighbors;
   ptr_t = t->detach_last();
   this->root = ptr_t;
+  this->root->key=1;
+  this->print_list();
   if (qqq->is_empty()!=1){
     this->root->neighbors = qqq;
-  }
+    }
   this->size=1;
-  //printf("t size=%i\n",t->return_size());
-  //printf("this size=%i\n",this->return_size());
-  /* this->print_list();
+
+  node * ptr = this->root;
+  int k=1;
   while(t->size>0){
-    printf("here22\n");
+    printf("\n");
     qqq = t->get_last_node()->neighbors;
-    qqq->print_queue();
     ptr_t = t->detach_last();
     ptr->next = ptr_t;
+    ptr->key=k;
+    k++;
     if (qqq->is_empty()!=1){
       ptr->next->neighbors = qqq;
     }
     ptr=ptr->next;
     size++;
-  }
-  printf("\nAFTER\n");
-  printf("this size=%i\n",this->return_size());
-  this->print_list();*/
+    //this->print_list();
+    }
+  ptr->key=k;
+  printf("exiting\n\n");
 }
 
 #endif
+
+
 /*
 int main(){
 
