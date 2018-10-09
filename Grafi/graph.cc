@@ -134,10 +134,17 @@ int main(){
   ad->print_list();
   
   printf("\n!!!!!!!!!!!!!!!!! Collapse !!!!!!!!!!!!!!!!\n");
-  //adjacency_list *adjr =
-  //collapse(g1, reversed_scc, size_reversed_scc);
+  adjacency_list *adj_sccs = collapse(g1, ad);
+  //int* m = adjl_to_adjm(adj_sccs);
+  //int* m_star = ut_matrx_tc(m);
   //printf("\n==== Printing adjrh: ====\n");
   //adjr->print_list();
+
+
+
+
+
+
 
 
   
@@ -148,6 +155,8 @@ int main(){
   free(scc_arr);*/
 
 
+
+  
   
   /*printf("\n!!!!!!!!!!!!!!!!! Floyd Warshall  !!!!!!!!!!!!!!!!\n");
   g1.insert_reacmat(1,6);

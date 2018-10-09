@@ -63,6 +63,7 @@ public:
   int dequeue_last_getting_key();
   int dequeue_last_getting_val();
   int get_from_key(int k);
+  bool value_already_present(int i);
   int get_head();
   int queue_to_array(int * arr);
   int pop();
@@ -119,6 +120,20 @@ class queue::Iterator queue::find(const int v){
 
 bool queue::is_empty(){
   if (size==0) return 1;
+  return 0;
+}
+
+bool queue::value_already_present(int i){
+  if (this->root==nullptr) return 0;
+  node *ptr = this->root;
+  if (ptr!=nullptr && ptr->val==i) return 1;
+  //printf("qui arrivo\n");
+  //this->print_queue();
+  while(ptr->val!=i && ptr->next!=nullptr){
+    ptr = ptr->next;
+  }
+  //printf("anche qui arrivo\n");
+  if (ptr->val==i) return 1;
   return 0;
 }
 

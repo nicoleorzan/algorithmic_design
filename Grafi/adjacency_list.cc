@@ -49,7 +49,7 @@ public:
       a.root->copy_node(*this);
     }
   }
-  ~adjacency_list(){};
+   ~adjacency_list(){};
 
   int return_size() { return size; };
   void print_list();
@@ -57,9 +57,12 @@ public:
   void add_node(int v);
   void add_neighbor(int n, int v);
   void add_queue(int n, queue *q);
+  bool key_is_present(int k);
   bool node_already_present(int i);
   bool node_is_present(int v);
   node* get_node(int v);
+  node* get_node_from_key(int k);
+  int get_val_from_key(int k);
   node* detach_last();
   void list_to_array(int *arr);
   void reverse();
@@ -145,6 +148,7 @@ void adjacency_list::add_neighbor(int n, int v){
     ptr->neighbors->enqueue(v);
   }
   else{
+    printf("else\n");
     int k = ptr->key;
     k++;
     ptr->next = new node{k, n};
@@ -173,8 +177,19 @@ bool adjacency_list::node_is_present(int v){
   else return 0;
 }
 
-adjacency_list::node* adjacency_list::get_node(int v){
+bool adjacency_list::key_is_present(int k){
   if (size==0) throw Empty_list{};
+  node*ptr= this->root;
+  if (ptr->key==k) return 1;
+  while(ptr->key!=k && ptr->next!=nullptr){
+    ptr = ptr->next;
+  }
+  if (ptr->key==k) return 1;
+  else return 0;
+}
+
+adjacency_list::node* adjacency_list::get_node(int v){
+  if (size==0) return nullptr;
   node*ptr= this->root;
   while(ptr->val!=v && ptr->next!=nullptr){
     ptr = ptr->next;
@@ -184,15 +199,40 @@ adjacency_list::node* adjacency_list::get_node(int v){
   return nullptr;
 }
 
+adjacency_list::node* adjacency_list::get_node_from_key(int k){
+  if (size==0) throw Empty_list{};
+  node*ptr= this->root;
+  while(ptr->key!=k && ptr->next!=nullptr){
+    ptr = ptr->next;
+  }
+  //if (ptr->next==nullptr) throw Missing_value{};
+  if (ptr->key==k) return ptr;
+  return nullptr;
+}
+
+
+int adjacency_list::get_val_from_key(int k){
+  if (size==0) throw Empty_list{};
+  node*ptr= this->root;
+  while(ptr->key!=k && ptr->next!=nullptr){
+    ptr = ptr->next;
+  }
+  if (ptr->key==k) return ptr->val;
+  return 0;
+}
 
 void adjacency_list::add_node(int v){
   // printf("add node\n");
   if (size==0){
     this->root = new node{1,v};
+    this->root->neighbors = new queue();    
     size++;
     return;
   }
-  if (this->node_already_present(v)==1) return;
+  if (this->node_already_present(v)==1) {
+    printf("adjacency_list.cc: cannot add node already present\n");
+    return;
+  }
   node* ptr = this-> root;
   while(ptr->next!=nullptr){
     ptr = ptr->next;
@@ -200,7 +240,6 @@ void adjacency_list::add_node(int v){
   int k = ptr->key;
   k++;
   ptr->next = new node{k,v};
-  ptr->neighbors = new queue();
   size++;
 }
 
