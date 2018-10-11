@@ -6,7 +6,7 @@
 #include "tarjan.cc"
 #include "collapse_list.cc"
 //#include "../BinaryHeap/binaryheap.h"
-//#include "dijkstra.cc"
+#include "dijkstra.cc"
 #include "floyd_warshall.cc"
 
 // NOTA: I NUMERI DEI VERTICI DEVONO PARTIRE DA 1, NON DA 0
@@ -118,7 +118,7 @@ int main(){
      DFS(g1);*/
 
 
-  printf("\n==== TARJAN: ====\n");
+  /* printf("\n==== TARJAN: ====\n");
   g1.insert_reacmat(2,3); 
   g1.insert_reacmat(3,4); 
   g1.insert_reacmat(4,2); 
@@ -132,9 +132,9 @@ int main(){
   printf("\nREVERSING SCC\n");
   ad->reverse();
   ad->print_list();
-  
+  */
   printf("\n!!!!!!!!!!!!!!!!! Collapse !!!!!!!!!!!!!!!!\n");
-  adjacency_list *adj_sccs = collapse(g1, ad);
+  //adjacency_list *adj_sccs = collapse(g1, ad);
   //int* m = adjl_to_adjm(adj_sccs);
   //int* m_star = ut_matrx_tc(m);
   //printf("\n==== Printing adjrh: ====\n");
@@ -148,11 +148,18 @@ int main(){
 
 
   
-  /*printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
+  printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
+  g1.insert_reacmat(2,3); 
+  g1.insert_reacmat(3,4); 
+  g1.insert_reacmat(4,2); 
+  g1.insert_reacmat(2,1);
+  g1.insert_reacmat(2,7);
+  g1.print_reacmat();
+  g1.print_admat();
   int s=1;
-  Dijkstra(g1, s);
-  free(reversed_scc);
-  free(scc_arr);*/
+  dijkstra(g1, s);
+  //free(reversed_scc);
+  //free(scc_arr);
 
 
 

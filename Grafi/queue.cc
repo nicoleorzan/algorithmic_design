@@ -15,9 +15,10 @@ class queue{
     int val;
     int key;
     node* next;
+    int dijkstra_distance;
 
-    node(int v, int k): val{v}, key{k}, next{nullptr} {}
-    node(const node& n):  val{n.val}, key{n.key}, next{n.next} {};
+    node(int v, int k): val{v}, key{k}, next{nullptr}, dijkstra_distance{999} {}
+    node(const node& n):  val{n.val}, key{n.key}, next{n.next}, dijkstra_distance{n.dijkstra_distance} {};
     void copy_node(queue& q){
       if (this->next!=nullptr){
 	q.enqueue(next->val);
@@ -58,15 +59,20 @@ public:
   node* get_root() { return root;};
   void print_queue();
   void enqueue(int v);
+  void enqueue_dijkstra(int v, int dist);
   void enqueue_queue(queue *q);
   void dequeue(int k);
+  int extract_min();
+  void dequeue_from_value(int v);
   int dequeue_last_getting_key();
   int dequeue_last_getting_val();
   int get_from_key(int k);
+  void print_priority();
   bool value_already_present(int i);
   int get_head();
   int queue_to_array(int * arr);
   int pop();
+  void update_priority(int v, int dist);
   node* get_last();
   node* get_penultimate();
   bool is_empty();
@@ -121,6 +127,50 @@ class queue::Iterator queue::find(const int v){
 bool queue::is_empty(){
   if (size==0) return 1;
   return 0;
+}
+
+
+void queue::print_priority(){
+  node *ptr = this->root;
+  for (int i=1; i<=size; i++){
+    printf("dist[%i] = %i\n", i,ptr->dijkstra_distance );
+    ptr=ptr->next;
+  }
+  printf("\n");
+ 
+}
+
+
+void queue::update_priority(int v, int dist){
+  if (size==0) return;
+  node*ptr = this->root;
+  if (ptr->val==v) ptr->dijkstra_distance=dist;
+  while(ptr->val!=v && ptr->next!=nullptr){
+    ptr=ptr->next;
+  }
+  if (ptr->val==v) ptr->dijkstra_distance=dist;
+}
+
+int queue::extract_min(){
+  if(this->root!=nullptr){
+    node *ptr = this->root;
+    int min = ptr->dijkstra_distance;
+    int i=1;
+    node *final_ptr;
+    while(i<=SIZE){
+      if(ptr->next!=nullptr){
+	ptr = ptr->next;
+	if (ptr->dijkstra_distance<min) {
+	  min=ptr->dijkstra_distance;
+	  final_ptr = ptr;
+	}
+      }
+      i++;
+    }
+    return ptr->val;
+  }
+  return 0;
+  
 }
 
 bool queue::value_already_present(int i){
@@ -212,6 +262,26 @@ void queue::enqueue(int v){
   size++;
 }
 
+void queue::enqueue_dijkstra(int v, int dist){
+  if (size==0){
+    //printf("queue size==0\n");
+    this->root = new node{v, 1};
+    this->root-> dijkstra_distance = dist;
+    size++;
+    return;
+  }
+  //printf("queue size!=0\n");
+  node *ptr = this->root;
+  while(ptr->next!=nullptr){
+    ptr=ptr->next;
+  }
+  int k = ptr->key;
+  k++;
+  ptr->next = new node{v, k};
+  ptr->next->dijkstra_distance = dist;
+  size++;
+}
+
 void queue::dequeue(int k){
   if (k>size){
     printf("key out of size, returning...\n");
@@ -245,6 +315,50 @@ void queue::dequeue(int k){
       ptr=ptr->next;
     }
     //now we found the key
+    //printf("found\n");
+    if (ptr->next->next!=nullptr){
+      ptr->next=ptr->next->next;
+      ptr->next->key--;
+      ptr = ptr->next;
+      while(ptr->next!=nullptr){
+	ptr->next->key--;
+	ptr=ptr->next;
+      }
+    }
+    size--;
+    
+  }
+}
+
+void queue::dequeue_from_value(int v){
+  //printf("dequeuing node with val %i \n", v);
+  if (size!=0){
+    if (this->root->val == v){
+      if (size==1){
+	this->root=nullptr;
+	size--;
+	return;
+      }
+      //printf("value is root\n");
+      this->root->next->key = this->root->key;
+      this->root = this->root->next;
+      node* ptr = this->root;
+      //change all others
+      while(ptr->next!=nullptr){
+	ptr->next->key--;
+	ptr=ptr->next;
+      }
+      //end
+      size--;
+      return;
+      }
+
+    //value is not the root
+    node *ptr = this->root;
+    while(ptr->next->val!=v){
+      ptr=ptr->next;
+    }
+    //now we found the node with value v
     //printf("found\n");
     if (ptr->next->next!=nullptr){
       ptr->next=ptr->next->next;

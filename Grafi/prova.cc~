@@ -1,0 +1,17 @@
+void matrix_multiplication(int* A, int* B, int* D_tmp, int size){
+
+
+  for (int i=1; i<=size; i++){
+    for (int j=0; j<=size; j++){
+      for (int k=0; k=size; k++){
+	D_tmp[size+j+i*size]+=A[i*size+k]*B[k*size+j];
+      }
+    }
+  }
+  
+}
+
+int main(){
+
+return 0;
+}
