@@ -63,6 +63,7 @@ public:
   void enqueue_queue(queue *q);
   void dequeue(int k);
   int extract_min();
+  node* get_from_value(int v);
   void dequeue_from_value(int v);
   int dequeue_last_getting_key();
   int dequeue_last_getting_val();
@@ -130,10 +131,20 @@ bool queue::is_empty(){
 }
 
 
+queue::node* queue::get_from_value(int v){
+  if (size==0) return nullptr;
+  node* ptr = this->root;
+  while(ptr->val!=v && ptr->next!=nullptr){
+    ptr=ptr->next;
+  }
+  if (ptr->val==v) return ptr;
+  else return 0;
+}
+
 void queue::print_priority(){
   node *ptr = this->root;
   for (int i=1; i<=size; i++){
-    printf("dist[%i] = %i\n", i,ptr->dijkstra_distance );
+    printf("ptr->val = %i, dist = %i\n", ptr->val, ptr->dijkstra_distance );
     ptr=ptr->next;
   }
   printf("\n");
@@ -152,22 +163,25 @@ void queue::update_priority(int v, int dist){
 }
 
 int queue::extract_min(){
+  // printf("SIZE=%i\n", SIZE);
   if(this->root!=nullptr){
     node *ptr = this->root;
     int min = ptr->dijkstra_distance;
+    int vval = ptr->val;
     int i=1;
     node *final_ptr;
     while(i<=SIZE){
       if(ptr->next!=nullptr){
 	ptr = ptr->next;
-	if (ptr->dijkstra_distance<min) {
+	if (ptr->dijkstra_distance < min) {
 	  min=ptr->dijkstra_distance;
 	  final_ptr = ptr;
+	  vval = final_ptr->val;
 	}
       }
       i++;
     }
-    return ptr->val;
+    return vval;
   }
   return 0;
   
@@ -330,49 +344,47 @@ void queue::dequeue(int k){
   }
 }
 
+
 void queue::dequeue_from_value(int v){
-  //printf("dequeuing node with val %i \n", v);
-  if (size!=0){
-    if (this->root->val == v){
-      if (size==1){
-	this->root=nullptr;
-	size--;
-	return;
-      }
-      //printf("value is root\n");
-      this->root->next->key = this->root->key;
-      this->root = this->root->next;
-      node* ptr = this->root;
-      //change all others
-      while(ptr->next!=nullptr){
-	ptr->next->key--;
-	ptr=ptr->next;
-      }
-      //end
+  if (size==0) return;
+  if (this->root->val==v){ //if root
+    if (size==1){
+      this->root=nullptr;
       size--;
       return;
-      }
-
-    //value is not the root
+    }
+    else{
+      node * ptr=this->root->next;
+      //int k= ptr->val;
+      this->root = ptr;
+      this->root->key=1;
+      size--;
+      return;
+    }
+  } //end if
+  else{
     node *ptr = this->root;
-    while(ptr->next->val!=v){
+    node *prec= this->root;
+    while(ptr->val!=v && ptr->next!=nullptr){
+      prec = ptr;
       ptr=ptr->next;
     }
-    //now we found the node with value v
-    //printf("found\n");
-    if (ptr->next->next!=nullptr){
-      ptr->next=ptr->next->next;
-      ptr->next->key--;
-      ptr = ptr->next;
-      while(ptr->next!=nullptr){
-	ptr->next->key--;
-	ptr=ptr->next;
+    //printf("prec val=%i\n", prec->val);
+    //printf("ptr val=%i\n", ptr->val);
+    if (ptr->val==v){
+      if (ptr->next!=nullptr){
+	int k= ptr->key;
+	prec->next=prec->next->next;
+	prec->next->key=k;
+	size--;
+      }
+      else{ prec->next=nullptr;
+	size--;
       }
     }
-    size--;
-    
   }
 }
+
 
 queue::node* queue::get_last(){
   node* ptr = this->root;

@@ -1,13 +1,6 @@
-#include "graph.h"
-#include "queue.cc"
-#include "adjacency_list.cc"
-#include "DFS.cc"
-#include "BFS.cc"
-#include "tarjan.cc"
-#include "collapse_list.cc"
-//#include "../BinaryHeap/binaryheap.h"
+#include "graph_modified.h"
 #include "dijkstra.cc"
-#include "floyd_warshall.cc"
+#include "queue.cc"
 
 // NOTA: I NUMERI DEI VERTICI DEVONO PARTIRE DA 1, NON DA 0
 
@@ -22,22 +15,22 @@ void Graph::print_admat() const {
     printf("\n");
 }
 
-void Graph::print_reacmat() const {
-  printf("print graph reachability matrix:\n");
+void Graph::print_reached() const {
+  printf("print graph reached matrix:\n");
     for(int i=1; i<=SIZE; i++){
       for(int j=1; j<=SIZE; j++){
-	printf("%i ",reac_mat[i*SIZE+j]);
+	printf("%i ",reached[i*SIZE+j]);
       }
       printf("\n");
     }
     printf("\n");
 }
 
-void Graph::print_weights() const {
-  printf("print graph weights matrix:\n");
+void Graph::print_reach() const {
+  printf("print graph reach matrix:\n");
     for(int i=1; i<=SIZE; i++){
       for(int j=1; j<=SIZE; j++){
-	printf("%i ",weights[i*SIZE+j]);
+	printf("%i ",reach[i*SIZE+j]);
       }
       printf("\n");
     }
@@ -58,66 +51,34 @@ void Graph::insert_admat(int i, int j) {
   }
 }
 
-void Graph::insert_weight(int i, int j, int w){
+
+void Graph::insert_reached(int i, int j, int w){ // i is reached by j
    if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
     printf("size out of the limit!!");
     return;
    }
-    else if (i==j){
-      printf("cannot weight a node\n");
-      return;
-    }
-    else{
-      weights[i+SIZE*j] = w;
-      weights[j+SIZE*i] = w;
-    }
-}
-
-void Graph::insert_reached(int i, int j, int w){
-   if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
-    printf("size out of the limit!!");
+    reached[i+SIZE*j] = w;
+    admat[i+SIZE*j] = 1;
+    //admat[i+SIZE*j] = 1;
     return;
-   }
-    else if (i==j){
-      printf("cannot weight a node\n");
-      return;
-    }
-    else{
-      weights[i+SIZE*j] = w;
-      weights[j+SIZE*i] = w;
-    }
 }
 
-void Graph::insert_reacmat(int i, int j) { //i reaches j
+void Graph::insert_reach(int i, int j, int w) { //i reaches j
   if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
     printf("size out of the limit!!");
     return;
   }
-  if (reacmat[i+size*j]!=0){
-    reac_mat[j+SIZE*i] = 1;
-    reac_mat[i+SIZE*j] = 1;
+    reach[i*SIZE+j] = w;
+    admat[i*SIZE+j] = 1;
+    // admat[j+SIZE*i] = 1;
     return;
-  }
-   else if (i==j){
-    reac_mat[i+SIZE*j] = 1;
-    admat[i+SIZE*j] = 1;
-  }
-  else{
-    reac_mat[i+SIZE*j] = -1;
-    reac_mat[j+SIZE*i] = 1;
-    reac_mat[j+SIZE*j] = 1; //il nodo puo` sempre ragigungere se stesso
-    reac_mat[i+SIZE*i] = 1;
-    admat[i+SIZE*j] = 1;
-    admat[j+SIZE*i] = 1;
-    admat[j+SIZE*j] = 1; //il nodo puo` sempre ragigungere se stesso
-    admat[i+SIZE*i] = 1; //il nodo puo` sempre ragigungere se stesso
-  }
 }
 
 
 void Graph::clear(){
   free(admat);
-  free(reac_mat);
+  free(reached);
+  free(reach);
 }
 
 int main(){
@@ -165,33 +126,20 @@ int main(){
 
 
 
-
-
   
   printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
-  g1.insert_reacmat(1,2);
-  g1.insert_reacmat(1,3);
-  g1.insert_reacmat(2,3);
-  g1.insert_reacmat(3,2);
-  g1.insert_reacmat(2,4); 
-  g1.insert_reacmat(2,4); 
-  g1.insert_reacmat(4,5); 
-  g1.insert_reacmat(5,4);
-  g1.insert_reacmat(3,5);
 
-  g1.insert_weight(1,2,10);
-  g1.insert_weight(1,3,3);
-  g1.insert_weight(2,3,1);
-  g1.insert_weight(2,3,1);
-  g1.insert_weight(2,3,1);
-  g1.insert_weight(2,3,1); 
-  g1.insert_weight(3,4,8); 
-  g1.insert_weight(4,2,6); 
-  g1.insert_weight(2,1,3);
-  g1.insert_weight(1,3,2);
+  g1.insert_reach(1,2,10);
+  g1.insert_reach(1,3,3);
+  g1.insert_reach(2,3,1);
+  g1.insert_reach(3,2,4);
+  g1.insert_reach(2,4,2);
+  g1.insert_reach(3,5,2); 
+  g1.insert_reach(3,4,8); 
+  g1.insert_reach(4,5,7); 
+  g1.insert_reach(5,4,9);
   
-  g1.print_reacmat();
-  g1.print_weights();
+  g1.print_reach();
   g1.print_admat();
   int s=1;
   dijkstra(g1, s);
