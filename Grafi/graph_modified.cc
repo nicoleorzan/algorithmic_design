@@ -1,5 +1,6 @@
 #include "graph_modified.h"
 #include "dijkstra.cc"
+#include "a_star.cc"
 #include "queue.cc"
 
 // NOTA: I NUMERI DEI VERTICI DEVONO PARTIRE DA 1, NON DA 0
@@ -114,7 +115,7 @@ int main(){
   ad->reverse();
   ad->print_list();
   */
-  printf("\n!!!!!!!!!!!!!!!!! Collapse !!!!!!!!!!!!!!!!\n");
+  //printf("\n!!!!!!!!!!!!!!!!! Collapse !!!!!!!!!!!!!!!!\n");
   //adjacency_list *adj_sccs = collapse(g1, ad);
   //int* m = adjl_to_adjm(adj_sccs);
   //int* m_star = ut_matrx_tc(m);
@@ -127,7 +128,7 @@ int main(){
 
 
   
-  printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
+  // printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
 
   g1.insert_reach(1,2,10);
   g1.insert_reach(1,3,3);
@@ -143,8 +144,8 @@ int main(){
   g1.print_admat();
   int s=1;
   dijkstra(g1, s);
-  //free(reversed_scc);
-  //free(scc_arr);
+  int t=5;
+  a_star(g1, s, t);
 
 
 
