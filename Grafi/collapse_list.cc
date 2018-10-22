@@ -54,8 +54,8 @@ void split_three_blocks(int*A, int*B, int*C, int *m, int size){
 
 void zero_one(int *m, int size){
 
-  for (int v=1; v<=SIZE; v++){
-    for (int w=1; w<=SIZE; w++){
+  for (int v=1; v<=size; v++){
+    for (int w=1; w<=size; w++){
       if (m[v*size+w]!=0) m[v*size+w]=1;
     }
   }
@@ -135,12 +135,12 @@ void ut_matrix_tc(int *m, int size){
 adjacency_list* collapse(Graph g, adjacency_list *mn){
   printf("\n========collapse=======\n");
   int mn_size = mn->return_size();
-  int * vtom = new int[(SIZE+1)*sizeof(int)];
+  int * vtom = new int[(g.SIZE+1)*sizeof(int)];
   // int *vtom = (int*)malloc((SIZE+1)*sizeof(int));
   adjacency_list* adjr(new adjacency_list());
   queue *coda = new queue();
 
-  for (int v=1; v<=SIZE; v++){
+  for (int v=1; v<=g.SIZE; v++){
      vtom[v]=0;
    }
   
@@ -162,31 +162,33 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
     i++;
   }
 
-   for (int v=1; v<=SIZE; v++){
+   for (int v=1; v<=g.SIZE; v++){
      printf("vtom[%i]=%i\n", v, vtom[v]);
      //ogni scc ha un nuovo numero da 1 a mn size che sarebbe il suo nome se fosse un "nodo" solo
    }
    printf("\n");
    
-   for (int v=1; v<=SIZE; v++){
-     for (int w=1; w<=SIZE; w++){
-       if(g.admat[v+SIZE*w]!=0){
+   for (int v=1; v<=g.SIZE; v++){
+     for (int w=1; w<=g.SIZE; w++){
+       if(g.admat[v+g.SIZE*w]!=0){
 	 if(adjr->get_node(vtom[v])==nullptr){
+	   printf("adding node %i\n", vtom[v]);
 	   adjr->add_node(vtom[v]);
 	   }
 	 if (vtom[w]!=vtom[v] && adjr->get_node(vtom[v])->neighbors->value_already_present(vtom[w])!=1 ){
+	   printf("adding %i to %i\n", vtom[w], vtom[v]);
 	   adjr->add_neighbor(vtom[v], vtom[w]);
 	 }
        }
      }
    }
-   
+   printf("adjr:\n");
    adjr->print_list();
 
-   int * adjm = (int*)malloc((mn_size+1)*(mn_size+1)*sizeof(int));
+   /* int * adjm = (int*)malloc((mn_size+1)*(mn_size+1)*sizeof(int));
    adjl_to_adjm(adjr, adjm, mn_size);
    print_matrix(adjm, mn_size);
-   ut_matrix_tc(adjm, mn_size);
+   ut_matrix_tc(adjm, mn_size);*/
 
 
    // adjacency_list* decollapsed =  decollapse(adjr, vtom);

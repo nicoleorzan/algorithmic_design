@@ -1,5 +1,5 @@
 #include <iostream>
-#define SIZE 5
+//#define SIZE 5
 
 #ifndef __GRAPH__
 #define __GRAPH__
@@ -15,11 +15,14 @@ class Graph{
   int *admat;
   int *reach;
   int *reached;
+  int SIZE;
 
-  Graph(){
-    admat = (int*) malloc((SIZE+1)*(SIZE+1)*sizeof(int) );
-    reach = (int*) malloc((SIZE+1)*(SIZE+1)*sizeof(int) );
-    reached = (int*) malloc((SIZE+1)*(SIZE+1)*sizeof(int) );	
+  Graph(int siz){
+ 		SIZE=siz;
+    admat = new int[(SIZE+1)*(SIZE+1)*sizeof(int)]; 
+    //(int*) malloc((SIZE+1)*(SIZE+1)*sizeof(int) );
+    reach = new int[(SIZE+1)*(SIZE+1)*sizeof(int)]; 
+    reached = new int[(SIZE+1)*(SIZE+1)*sizeof(int)]; 	
     for( int i = 1; i <= SIZE*SIZE; i++ ){
       admat[i] = 0;
       reach[i] = 0;
@@ -27,8 +30,9 @@ class Graph{
     }
   }
   ~Graph(){
-    //free(admat);
-    //free(reac_mat);
+    //delete[] admat;
+    //delete[] reach;
+    //delete[] reached;
   }
 
   void print_admat() const;
@@ -38,6 +42,7 @@ class Graph{
   void insert_reached(int i, int j, int w);		
   void clear();
   int* get_admat() {return this->admat;};
+  int* get_reach_mat() {return this->reach;};
 
 }; // end class Graph
 

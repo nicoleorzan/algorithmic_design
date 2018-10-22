@@ -1,4 +1,6 @@
-void print_mat(int *mat){
+#ifndef PRINT
+#def PRINT
+void print_mat(int *mat, int SIZE){
 for (int k=1; k<=SIZE; k++){
     for (int i=1; i<=SIZE; i++){
       printf("%i ", mat[i+k*SIZE]);
@@ -7,7 +9,9 @@ for (int k=1; k<=SIZE; k++){
   }
 }
 
-void floyd_warshall(int * W){
+#endif
+
+void floyd_warshall(int * W, int SIZE){
   printf("\n======floyd_warshall======\n");
   printf("Theta(V^3) = %i \n", SIZE*SIZE*SIZE);
   
@@ -27,9 +31,9 @@ void floyd_warshall(int * W){
 
   printf("\nBEFORE:\n");
   printf("Matrix D:\n");
-  print_mat(D);
+  print_mat(D, SIZE);
   printf("Matrix pi:\n");
-  print_mat(pi);
+  print_mat(pi, SIZE);
   
   for (int k=1; k<=SIZE; k++){
     for (int i=1; i<=SIZE; i++){
@@ -43,9 +47,9 @@ void floyd_warshall(int * W){
   }
   printf("\nAFTER:\n");
   printf("Matrix D:\n");
-  print_mat(D);
+  print_mat(D, SIZE);
   printf("Matrix pi:\n");
-  print_mat(pi);
+  print_mat(pi, SIZE);
   free(pi);
   free(D);
 }

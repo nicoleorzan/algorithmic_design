@@ -1,6 +1,11 @@
 #include "graph_modified.h"
+#include "BFS.cc"
+#include "DFS.cc"
+#include "tarjan.cc"
+#include "collapse_list.cc"
 #include "dijkstra.cc"
 #include "a_star.cc"
+#include "floyd_warshall.cc"
 #include "queue.cc"
 
 // NOTA: I NUMERI DEI VERTICI DEVONO PARTIRE DA 1, NON DA 0
@@ -71,7 +76,7 @@ void Graph::insert_reach(int i, int j, int w) { //i reaches j
   }
     reach[i*SIZE+j] = w;
     admat[i*SIZE+j] = 1;
-    // admat[j+SIZE*i] = 1;
+    admat[i*SIZE+i] = 1; //<======== aggiunto questo 
     return;
 }
 
@@ -82,54 +87,60 @@ void Graph::clear(){
   free(reach);
 }
 
-int main(){
-  
-  Graph g1;
-  
-  /* printf("\n==== BFS and DFS: ====\n");
-     g1.insert_reacmat(2,3); 
-     g1.insert_reacmat(3,4); 
-     g1.insert_reacmat(4,2); 
-     g1.insert_reacmat(2,1);
-     g1.insert_reacmat(2,7);
-     g1.print_reacmat();
-     g1.print_admat();
-  
-     int s = 4;
-     BFS(g1, s);
-     DFS(g1);*/
 
 
-  /* printf("\n==== TARJAN: ====\n");
-  g1.insert_reacmat(2,3); 
-  g1.insert_reacmat(3,4); 
-  g1.insert_reacmat(4,2); 
-  g1.insert_reacmat(2,1);
-  g1.insert_reacmat(2,7);
-  g1.print_reacmat();
+
+
+
+
+
+
+
+
+void BFS_DFS(){
+  printf("================= \n");
+  printf("BREADTH FIRST SEARCH and DEPTH FIRST SEARCH\n");
+  printf("================= \n\n");
+  Graph g1(7);
+  // metto pesi 1, non vengono usati da BFS e DFS
+  g1.insert_reach(2,3,1); 
+  g1.insert_reach(3,4,1); 
+  g1.insert_reach(4,2,1); 
+  g1.insert_reach(2,1,1);
+  g1.insert_reach(2,7,1);
+  g1.print_reach();
+  g1.print_admat();
+  
+  int s = 4;
+  BFS(g1, s);
+  DFS(g1);
+}
+
+void Tarjan(){
+  printf("\n==== TARJAN: ====\n");
+  // metto pesi 1, non vengono usati da BFS e DFS
+  Graph g1(7);
+  g1.insert_reach(2,3,1); 
+  g1.insert_reach(3,4,1); 
+  g1.insert_reach(4,2,1); 
+  g1.insert_reach(2,1,1);
+  g1.insert_reach(2,7,1);
+  g1.print_reach();
   g1.print_admat();
   adjacency_list *ad= tarjan_scc(g1);
   printf("\n==== Printing strong connected components of the graph: ====\n");
   ad->print_list();
-  printf("\nREVERSING SCC\n");
+  printf("\nREVERSING SCC:");
   ad->reverse();
   ad->print_list();
-  */
-  //printf("\n!!!!!!!!!!!!!!!!! Collapse !!!!!!!!!!!!!!!!\n");
-  //adjacency_list *adj_sccs = collapse(g1, ad);
-  //int* m = adjl_to_adjm(adj_sccs);
-  //int* m_star = ut_matrx_tc(m);
-  //printf("\n==== Printing adjrh: ====\n");
-  //adjr->print_list();
 
+  printf("\n!!!!!!!!!!!!!!!!! Collapse !!!!!!!!!!!!!!!!\n");
+  adjacency_list *adj_sccs = collapse(g1, ad);
+}
 
-
-
-
-
-  
-  // printf("\n!!!!!!!!!!!!!!!!! Dijkstra  !!!!!!!!!!!!!!!!\n");
-
+void Dijkstra_and_Astar(){
+  printf("\n==== DIJKSTRA and A_STAR: ====\n\n");
+  Graph g1(5);
   g1.insert_reach(1,2,10);
   g1.insert_reach(1,3,3);
   g1.insert_reach(2,3,1);
@@ -146,46 +157,48 @@ int main(){
   dijkstra(g1, s);
   int t=5;
   a_star(g1, s, t);
+}
+
+void Floyd_Warshall(){
+  Graph g2(8);
+  g2.insert_reach(1,6,2);
+  g2.insert_reach(1,3,4);
+  g2.insert_reach(1,4,18);
+  g2.insert_reach(1,2,1);
+  g2.insert_reach(2,3,3); 
+  g2.insert_reach(2,5,6); 
+  g2.insert_reach(3,4,1); 
+  g2.insert_reach(3,5,2); 
+  g2.insert_reach(3,8,45); 
+  g2.insert_reach(5,4,2);
+  g2.insert_reach(2,7,1);
+  g2.insert_reach(2,8,20);
+  g2.insert_reach(4,8,1);
+  g2.insert_reach(5,8,2); 
+  int * W = g2.get_reach_mat();
+
+  floyd_warshall(W, g2.SIZE);
+}
 
 
 
-  
-  
-  /*printf("\n!!!!!!!!!!!!!!!!! Floyd Warshall  !!!!!!!!!!!!!!!!\n");
-  g1.insert_reacmat(1,6);
-  g1.insert_reacmat(1,3);
-  g1.insert_reacmat(1,4);
-  g1.insert_reacmat(1,2);
-  g1.insert_reacmat(2,3); 
-  g1.insert_reacmat(2,5); 
-  g1.insert_reacmat(3,4); 
-  g1.insert_reacmat(3,5); 
-  g1.insert_reacmat(3,8); 
-  g1.insert_reacmat(5,4);
-  g1.insert_reacmat(2,7);
-  g1.insert_reacmat(2,8);
-  g1.insert_reacmat(4,8);
-  g1.insert_reacmat(5,8);
-  g1.insert_weight(1,6,2);
-  g1.insert_weight(2,5,6);
-  g1.insert_weight(1,4,18);
-  g1.insert_weight(1,3,4);
-  g1.insert_weight(3,4,1);
-  g1.insert_weight(2,3,3);
-  g1.insert_weight(1,2,1);
-  g1.insert_weight(3,8,45);
-  g1.insert_weight(5,4,2);
-  g1.insert_weight(4,8,1);
-  g1.insert_weight(2,7,1);
-  g1.insert_weight(3,5,2);
-  g1.insert_weight(2,8,20);
-  g1.insert_weight(5,8,2);
+
+int main(){
+
+  //BFS_DFS();
+
+  Tarjan();
  
-  g1.print_weights();
-  printf("size of the graph= %i\n",SIZE);  
-  int * W = g1.get_weight_mat();
 
-  floyd_warshall(W);*/
+  //int* m = adjl_to_adjm(adj_sccs);
+  //int* m_star = ut_matrx_tc(m);
+  //printf("\n==== Printing adjrh: ====\n");
+  //adjr->print_list();
+
+      
+  //Dijkstra_and_Astar();
+
+  // Floyd_Warshall();
   
   printf("END\n");
   return 0;  

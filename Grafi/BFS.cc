@@ -5,7 +5,7 @@
 #define PRINT
 template<typename T>
 void print_char(T* A, int dim){
-  for(int i=0; i<dim; i++){
+  for(int i=1; i<=dim; i++){
     printf("%c ",A[i]);
   }
   printf("\n");
@@ -13,7 +13,7 @@ void print_char(T* A, int dim){
 
 template<typename T>
 void print_array(T* A, int dim){
-  for(int i=0; i<dim; i++){
+  for(int i=1; i<=dim; i++){
     printf("%i ",A[i]);
   }
   printf("\n");
@@ -23,13 +23,14 @@ void print_array(T* A, int dim){
 void BFS(Graph g, int s){
   printf("================= \n");
   printf("Breadth First Search algorithm\n");
-  printf("================= \n");
+  printf("================= \n\n");
   
   printf("selected vertex number %i (counting from 1) \n", s);
   s=s-1;
-  int *d = (int*) malloc(SIZE*sizeof(int) );
-  int *pi = (int*) malloc(SIZE*sizeof(int) );
-  char *color = (char*) malloc(SIZE*sizeof(char) );
+  int *d = new int[(g.SIZE+1)*sizeof(int) ];
+  int *pi =  new int[(g.SIZE+1)*sizeof(int) ];
+  char *color =  new char[(g.SIZE+1)*sizeof(char) ];
+  //(char*) malloc(g.SIZE*sizeof(char) );
   queue q;
   int u;
 
@@ -39,7 +40,7 @@ void BFS(Graph g, int s){
 #endif
  
   // initialization
-   for(int i=0; i<SIZE; i++){
+   for(int i=1; i<=g.SIZE; i++){
      if (i!= s){
      color[i] = 'w';
      d[i] = 999;
@@ -52,7 +53,7 @@ void BFS(Graph g, int s){
 
 #ifdef DEBUG
    printf("vector color inizialmente:\n");
-   print_char(color, SIZE);
+   print_char(color, g.SIZE);
 #endif
    
    q.enqueue(s);
@@ -62,8 +63,8 @@ void BFS(Graph g, int s){
 #ifdef DEBUG
      printf("u=%i \n", u );
 #endif
-     for(int v=0; v<SIZE; v++){
-       if (g.admat[v+SIZE*u]!=0){
+     for(int v=1; v<=g.SIZE; v++){
+       if (g.admat[v+g.SIZE*u]!=0){
 	 if (color[v]=='w') {
 	   color[v]='g';
 	   d[v] = d[u] + 1;
@@ -80,13 +81,14 @@ void BFS(Graph g, int s){
    }// end while
 
    printf("color: ");
-   print_char(color, SIZE);
+   print_char(color, g.SIZE);
    printf("dist: ");
-   print_array(d, SIZE);
+   print_array(d, g.SIZE);
    printf("pi: ");
-   print_array(pi, SIZE);
+   print_array(pi, g.SIZE);
    
-   free(d);
-   free(pi);
-   free(color);
+   delete[] d;
+   delete[] pi;
+   delete[] color;
+   printf("\n\n\n\n");
 }

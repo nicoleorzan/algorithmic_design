@@ -24,11 +24,13 @@ void print_array(T* A, int dim){
 #endif
 
 int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, char* color, adjacency_list *sccs){
+#ifdef DEBUG
   printf("---tarjan scc real, v=%i, time=%i---\n", v, time);
+#endif
   d[v] = time;
   lowlink[v] = time;
   time++;
-  color[v] = 'g';
+  color[v] ='g';
   q.enqueue(v);
 #ifdef DEBUG
   print_char(color,SIZE);
@@ -37,8 +39,8 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
 #endif
 
 
-  for (int w=1; w<SIZE; w++){
-    if( g.reac_mat[w+SIZE*v]==1){
+  for (int w=1; w<=g.SIZE; w++){
+    if( g.reach[w+g.SIZE*v]==1){
       if (color[w]=='w'){
 	time = tarjan_scc_real(g, w, time, q, d, lowlink, color, sccs);
 	if (lowlink[v]>lowlink[w]) { lowlink[v] = lowlink[w];}
@@ -59,8 +61,8 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
 #ifdef DEBUG
   printf("=======root node=======, v=%i\n", v);
   printf("CHECK LOWLINK OF V=%i\n", v);
-  print_array(lowlink, SIZE);
-  print_array(d, SIZE);
+  print_array(lowlink, g.SIZE);
+  print_array(d, g.SIZE);
   q.print_queue();
 #endif
   color[v] = 'b';
@@ -84,12 +86,12 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
     //printf("Printing q:\n");
     //q.print_queue();
   }
-  #ifdef DEBUG
+#ifdef DEBUG
   scc.print_queue();
   q.print_queue();
-  print_char(color, SIZE);
+  print_char(color, g.SIZE);
   printf("exiting\n");
-  #endif
+#endif
   
   return time;
 }
@@ -98,36 +100,36 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
 
 adjacency_list* tarjan_scc(Graph g){
   printf("====Tarjan scc====\n");
-  int* d = (int*)malloc(SIZE*sizeof(int));
-  int* lowlink = (int*)malloc(SIZE*sizeof(int));
-  char* color = (char*)malloc(SIZE*sizeof(char));
+  int* d = new int[g.SIZE*sizeof(int)];
+  int* lowlink = new int[g.SIZE*sizeof(int)];
+  char* color = new char[g.SIZE*sizeof(char)];
   queue q;
   int edges=0;
   int time=0;
   adjacency_list* sccs(new adjacency_list());
   
-  for (int i=1; i<SIZE; i++){
-    for (int j=1; j<SIZE; j++){
-      if (g.admat[i+SIZE*j]!=0) edges++;
+  for (int i=1; i<=g.SIZE; i++){
+    for (int j=1; j<=g.SIZE; j++){
+      if (g.admat[i+g.SIZE*j]!=0) edges++;
     }
     color[i] = 'w';
     d[i]=0;
     lowlink[i] = 999;
   }
-  printf("time should be~=%d\n", edges/2+SIZE);
+  printf("time should be~=%d\n", edges/2+g.SIZE);
   
-  for (int v=1; v<SIZE; v++){
+  for (int v=1; v<=g.SIZE; v++){
     //  int v=1;
-    if (color[v]=='w' && g.admat[v+SIZE*v]!=0){
+    if (color[v]=='w' && g.admat[v+g.SIZE*v]!=0){
       time = tarjan_scc_real(g, v, time, q,  d, lowlink, color, sccs);
     }
   }
   
   printf("time=%i\n", time);
   //sccs->print_list();
-  free(d);
-  free(lowlink);
-  free(color);
+  delete[] d;
+  delete[] lowlink;
+  delete[] color;
 
   return sccs;
 }

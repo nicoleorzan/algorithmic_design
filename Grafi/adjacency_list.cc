@@ -78,7 +78,8 @@ void adjacency_list::list_to_array(int *arr){
   node *ptr =this->root;
   int i=0,  size_arr = 0;
   queue *q;
-  int * tmp = (int*)malloc(SIZE*sizeof(int));
+  int SIZE = 100;
+  int * tmp = new int[SIZE*sizeof(int)];
   while(ptr!=nullptr){
     arr[i] = ptr->val;
     if (ptr->neighbors->is_empty()!=1){
@@ -92,7 +93,7 @@ void adjacency_list::list_to_array(int *arr){
     i++;
     ptr=ptr->next;
   }
-  free(tmp);
+  delete[] tmp;
 }
 
 void adjacency_list::add_queue(int n, queue *q){
@@ -265,13 +266,13 @@ void adjacency_list::reverse(){//not working
   adjacency_list* t = new adjacency_list(*this);
   queue *qqq = new queue();
   node *ptr_t;
-  printf("in reversing\n");
+  //printf("in reversing\n");
 
   qqq = t->get_last_node()->neighbors;
   ptr_t = t->detach_last();
   this->root = ptr_t;
   this->root->key=1;
-  this->print_list();
+  //this->print_list();
   if (qqq->is_empty()!=1){
     this->root->neighbors = qqq;
     }
@@ -294,7 +295,7 @@ void adjacency_list::reverse(){//not working
     //this->print_list();
     }
   ptr->key=k;
-  printf("exiting\n\n");
+  //printf("exiting\n\n");
 }
 
 #endif

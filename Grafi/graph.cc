@@ -93,7 +93,7 @@ void Graph::insert_reacmat(int i, int j) { //i reaches j
     printf("size out of the limit!!");
     return;
   }
-  if (reacmat[i+size*j]!=0){
+  if (reacmat[i+SIZE*j]!=0){
     reac_mat[j+SIZE*i] = 1;
     reac_mat[i+SIZE*j] = 1;
     return;

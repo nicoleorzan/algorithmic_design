@@ -170,7 +170,7 @@ int queue::extract_min(){
     int vval = ptr->val;
     int i=1;
     node *final_ptr;
-    while(i<=SIZE){
+    while(i<=size){
       if(ptr->next!=nullptr){
 	ptr = ptr->next;
 	if (ptr->dijkstra_distance < min) {
