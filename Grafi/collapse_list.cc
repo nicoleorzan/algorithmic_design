@@ -167,16 +167,23 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
      //ogni scc ha un nuovo numero da 1 a mn size che sarebbe il suo nome se fosse un "nodo" solo
    }
    printf("\n");
+   int * scc_mat = new int[(mn_size+1)*(mn_size+1)*sizeof(int)];
    
+   for (int v=1; v<=mn_size; v++){
+     for (int w=1; w<=mn_size; w++){
+       scc_mat[v+mn_size*w]=0;
+     }
+   }
    for (int v=1; v<=g.SIZE; v++){
      for (int w=1; w<=g.SIZE; w++){
-       if(g.admat[v+g.SIZE*w]!=0){
+       // if(g.admat[*SIZE+v]!=0){
+       if(g.reach[w*g.SIZE+v]!=0){
+	 printf("%i collegato con %i\n",w,v);
 	 if(adjr->get_node(vtom[v])==nullptr){
-	   printf("adding node %i\n", vtom[v]);
 	   adjr->add_node(vtom[v]);
 	   }
 	 if (vtom[w]!=vtom[v] && adjr->get_node(vtom[v])->neighbors->value_already_present(vtom[w])!=1 ){
-	   printf("adding %i to %i\n", vtom[w], vtom[v]);
+	   //printf("adding %i to %i\n", vtom[w], vtom[v]);
 	   adjr->add_neighbor(vtom[v], vtom[w]);
 	 }
        }
@@ -185,10 +192,10 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
    printf("adjr:\n");
    adjr->print_list();
 
-   /* int * adjm = (int*)malloc((mn_size+1)*(mn_size+1)*sizeof(int));
+   int * adjm = (int*)malloc((mn_size+1)*(mn_size+1)*sizeof(int));
    adjl_to_adjm(adjr, adjm, mn_size);
    print_matrix(adjm, mn_size);
-   ut_matrix_tc(adjm, mn_size);*/
+   ut_matrix_tc(adjm, mn_size);
 
 
    // adjacency_list* decollapsed =  decollapse(adjr, vtom);
