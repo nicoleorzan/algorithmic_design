@@ -104,7 +104,7 @@ void adjacency_list::add_queue(int n, queue *q){
 
 bool adjacency_list::node_already_present(int i){
   if (size==0){
-    printf("cannot check empty list!!!\n");
+    //printf("cannot check empty list!!!\n");
     return 0;// throw Empty_list{};
   }
   node* p = this->root;

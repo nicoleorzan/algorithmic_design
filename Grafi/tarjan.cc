@@ -40,7 +40,8 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
 
 
   for (int w=1; w<=g.SIZE; w++){
-    if( g.reach[w+g.SIZE*v]==1){
+    if( g.admat[w+g.SIZE*v]==1){
+      //if( g.reach[w+g.SIZE*v]==1){
       if (color[w]=='w'){
 	time = tarjan_scc_real(g, w, time, q, d, lowlink, color, sccs);
 	if (lowlink[v]>lowlink[w]) { lowlink[v] = lowlink[w];}

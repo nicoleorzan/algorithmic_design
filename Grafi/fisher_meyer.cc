@@ -13,11 +13,12 @@ void print_matrix(int* A, int dim){
     printf("\n");
   }
 }
+
 #endif
 
 
 void matrix_multiplication(int* A, int* B, int* D_tmp, int size){
-
+  // printf("\n===matrix multiplication====\n");
   for (int i=1; i<=size; i++){
     for (int j=1; j<=size; j++){
       for (int k=1; k<=size; k++){
@@ -29,11 +30,12 @@ void matrix_multiplication(int* A, int* B, int* D_tmp, int size){
 }
 
 void adjl_to_adjm(adjacency_list * ad, int* mat, int size){
-
+  printf("\n===adjl_to_adjm====\n");
   for (int v=1; v<=size; v++){
     for (int w=1; w<=size; w++){
       if(ad->get_node(v)->neighbors->value_already_present(w)==1){
 	mat[w*size+v] = 1;
+	//mat[v*size+w] = 1;
       }
       else mat[w*size+v] = 0;
     }
@@ -42,6 +44,7 @@ void adjl_to_adjm(adjacency_list * ad, int* mat, int size){
 }
 
 void split_three_blocks(int*A, int*B, int*C, int *m, int size){
+  printf("\n===split_three_blocks====\n");
   for (int i=1; i<=size/3; i++){
     for (int j=1; j<=size/3; j++){
       A[i*size+j] = m[i*size+j];
@@ -52,38 +55,67 @@ void split_three_blocks(int*A, int*B, int*C, int *m, int size){
 
 }
 
-void zero_one(int *m, int size){
 
-  for (int v=1; v<=size; v++){
-    for (int w=1; w<=size; w++){
-      if (m[v*size+w]!=0) m[v*size+w]=1;
+int* matrix_real(int *m, int size){
+  printf("\n=== matrix_real====\n");
+  if (size==1) return m;
+  int size2 = size;
+  if (log2(size)!=std::floor(log2(size))){
+    size2 = size+1;
+  }
+  printf("using size2= %i, while size=%i\n", size2, size);
+  
+  int * A = new int[(size2/2+1)*(size2/2+1)*sizeof(int)];
+  int * B = new int[(size2/2+1)*(size2/2+1)*sizeof(int)];
+  int * C = new int[(size2/2+1)*(size2/2+1)*sizeof(int)];
+  int * Mstar = new int[(size2+1)*(size2+1)*sizeof(int)];
+  int * Astar = new int[(size2/2+1)*(size2/2+1)*sizeof(int)];
+  int * Bstar = new int[(size2/2+1)*(size2/2+1)*sizeof(int)];
+  int * D = new int[(size2/2+1)*(size2/2+1)*sizeof(int)];
+
+  for (int i=1; i<=size2/2; i++){
+    for (int j=1; j<=size2/2; j++){
+      A[i*size2/2+j] = m[i*size+j];
+      if (size2/2+i>size || size2/2+j>size)  {
+	printf("i = %i, j=%i\n", i, j);
+	B[i*size2/2+j]=0;//-999;
+      }
+      else B[i*size2/2+j] = m[(size2/2+i)*size2+(size2/2+j)];
+      if ((j+size2/2)>size)  C[i*size2/2+j]=0;//-999;
+      else  C[i*size2/2+j] = m[i*size+(j+size2/2)];
     }
   }
+  printf("m=\n");
+  print_matrix(m, size);
+  printf("matrix A:\n");
+  print_matrix(A, size2/2);
+  printf("\nmatrix B:\n");
+  print_matrix(B, size2/2);
+  printf("\nmatrix C:\n");
+  print_matrix(C, size2/2);
   
-}
+  matrix_multiplication(A, C, D, size2/2);
+  matrix_multiplication(D, B, D, size2/2);
+  printf("\nmatrix D = ACB:\n");
+  print_matrix(D, size2/2);
+  
+  for (int i=1; i<=size2/2; i++){
+    for (int j=1; j<=size2/2; j++){
+      Mstar[i*size2/2+j] = A[i*size2/2+j];
+      Mstar[(size2/2+i)*size2/2+j+size2/2] = B[i*size2/2+j];
+      Mstar[i*size2/2+j+size2/2] = D[i*size2/2+j];
+    }
+  }
+  printf("\nmatrix Mstar:\n");
+  print_matrix(Mstar, size);
 
-int* ut_matrix_tc_real(int *m, int size){
-  if (size==1) return m;
-
-  int * A = new int[(size+1)*(size+1)*sizeof(int)];
-  int * B = new int[(size+1)*(size+1)*sizeof(int)];
-  int * C = new int[(size+1)*(size+1)*sizeof(int)];
-  int * Astar = new int[(size+1)*(size+1)*sizeof(int)];
-  int * Bstar = new int[(size+1)*(size+1)*sizeof(int)];
-  int * D = new int[(size+1)*(size+1)*sizeof(int)];
-  /*split_three_blocks(A, B, C, m, size);
-    Astar = ut_matrix_tc_real(A);
-    Bstar = ut_matrix_tc_real(A);
-    D = matrix_multiplication(Astar, C);
-    D = matrix_multiplication(D, Bstar);
-    zero_one(D);
-   */
   
   delete[] A;
   delete[] B;
   delete[] C;
   delete[] Astar;
   delete[] Bstar;
+  delete[] Mstar;
   delete[] D;
 
   return A;
@@ -93,9 +125,8 @@ void ut_matrix_tc(int *m, int size){
   printf("\n===ut_matrix_tc====\n");
   printf("log2(size)=%f\n", log2(size));
   printf("floor(log2(size))=%f\n", floor(log2(size)));
-  if (log2(size)!=std::floor(log(size))){
-    printf("yea\n");
-    // m = ut_matrix_tc_real(m, size);
+  if (log2(size)!=std::floor(log2(size))){ //matrice non quadrata
+    matrix_real(m, size);
   }
 }
 
@@ -176,7 +207,7 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
    }
    for (int v=1; v<=g.SIZE; v++){
      for (int w=1; w<=g.SIZE; w++){
-       // if(g.admat[*SIZE+v]!=0){
+       // if(g.admat[w*g.SIZE+v]!=0){
        if(g.reach[w*g.SIZE+v]!=0){
 	 printf("%i collegato con %i\n",w,v);
 	 if(adjr->get_node(vtom[v])==nullptr){

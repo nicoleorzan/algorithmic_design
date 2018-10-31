@@ -2,7 +2,7 @@
 #include "BFS.cc"
 #include "DFS.cc"
 #include "tarjan.cc"
-#include "collapse_list.cc"
+#include "fisher_meyer.cc"
 #include "dijkstra.cc"
 #include "a_star.cc"
 #include "floyd_warshall.cc"
@@ -11,7 +11,7 @@
 // NOTA: I NUMERI DEI VERTICI DEVONO PARTIRE DA 1, NON DA 0
 
 void Graph::print_admat() const {
-  printf("print graph adjacecncy matrix:\n");
+  printf("print graph adjacency matrix:\n");
     for(int i=1; i<=SIZE; i++){
       for(int j=1; j<=SIZE; j++){
 	printf("%i ",admat[i*SIZE+j]);
@@ -52,8 +52,8 @@ void Graph::insert_admat(int i, int j) {
   else {
     admat[i+SIZE*j] = 1;
     admat[j+SIZE*i] = 1;
-    admat[j+SIZE*j] = 1; //il nodo puo` sempre ragigungere se stesso
-    admat[i+SIZE*i] = 1; //il nodo puo` sempre ragigungere se stesso
+    admat[j+SIZE*j] = 1; //il nodo puo` sempre raggiungere se stesso
+    admat[i+SIZE*i] = 1; //il nodo puo` sempre raggiungere se stesso
   }
 }
 
@@ -106,7 +106,7 @@ void BFS_DFS(){
   Graph g1(7);
   // metto pesi 1, non vengono usati da BFS e DFS
   g1.insert_reach(2,3,1); 
-  g1.insert_reach(3,4,1); 
+  g1.insert_reach(4,3,1); // g1.insert_reach(3,4,1); 
   g1.insert_reach(4,2,1); 
   g1.insert_reach(2,1,1);
   g1.insert_reach(2,7,1);
@@ -120,7 +120,6 @@ void BFS_DFS(){
 
 void Tarjan(){
   printf("\n==== TARJAN: ====\n");
-  // metto pesi 1, non vengono usati da BFS e DFS
   Graph g1(7);
   g1.insert_reach(2,3,1); 
   g1.insert_reach(3,4,1); 
@@ -187,7 +186,7 @@ void Floyd_Warshall(){
 
 int main(){
 
-  BFS_DFS();
+  //BFS_DFS();
 
   Tarjan();
  
@@ -198,9 +197,9 @@ int main(){
   //adjr->print_list();
 
       
-  Dijkstra_and_Astar();
+  //Dijkstra_and_Astar();
 
-  Floyd_Warshall();
+  //Floyd_Warshall();
   
   printf("END\n");
   return 0;  
