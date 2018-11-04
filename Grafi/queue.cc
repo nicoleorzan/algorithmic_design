@@ -121,8 +121,8 @@ class queue::Iterator queue::find(const int v){
   while (ptr->val!=v && ptr->next!=nullptr){
     ptr=ptr->next;
   }
-  if (ptr->next==nullptr) return nullptr;// Iterator{nullptr};
-  else return ptr;// Iterator{ptr};
+  if (ptr->next==nullptr) return nullptr;
+  else return ptr;
 }
 
 bool queue::is_empty(){
@@ -191,12 +191,10 @@ bool queue::value_already_present(int i){
   if (this->root==nullptr) return 0;
   node *ptr = this->root;
   if (ptr!=nullptr && ptr->val==i) return 1;
-  //printf("qui arrivo\n");
   //this->print_queue();
   while(ptr->val!=i && ptr->next!=nullptr){
     ptr = ptr->next;
   }
-  //printf("anche qui arrivo\n");
   if (ptr->val==i) return 1;
   return 0;
 }

@@ -8,7 +8,7 @@ class Graph{
 
  private:
  
- void insert_admat(int i, int j);
+ void insert_admat(int const i, int const j);
      
  public:
   
@@ -17,7 +17,7 @@ class Graph{
   int SIZE;
 
   Graph(int siz){
-    SIZE=siz;
+    SIZE = siz;
     admat = new int[(SIZE+1)*(SIZE+1)*sizeof(int)]; 
     reach = new int[(SIZE+1)*(SIZE+1)*sizeof(int)]; 
     //initialization    
@@ -33,11 +33,11 @@ class Graph{
 
   void print_admat() const;
   void print_reach() const;
-  void insert_reach(int i, int j, int w);			
+  void insert_reach(int const i, int const j, int const w);			
   void clear();
-  int* get_admat() {return this->admat;};
-  int* get_reach_mat() {return this->reach;};
+  int* get_admat() const {return this->admat;};
+  int* get_reach_mat() const {return this->reach;};
 
-}; // end class Graph
+};//end Graph
 
 #endif

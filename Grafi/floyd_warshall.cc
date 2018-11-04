@@ -1,15 +1,4 @@
-#ifndef PRINT
-#def PRINT
-void print_mat(int *mat, int SIZE){
-for (int k=1; k<=SIZE; k++){
-    for (int i=1; i<=SIZE; i++){
-      printf("%i ", mat[i+k*SIZE]);
-    }
-    printf("\n");
-  }
-}
-
-#endif
+#include "print.cc"
 
 void floyd_warshall(int * W, int SIZE){
   printf("\n======floyd_warshall======\n");
@@ -31,9 +20,9 @@ void floyd_warshall(int * W, int SIZE){
 
   printf("\nBEFORE:\n");
   printf("Matrix D:\n");
-  print_mat(D, SIZE);
+  print_matrix(D, SIZE);
   printf("Matrix pi:\n");
-  print_mat(pi, SIZE);
+  print_matrix(pi, SIZE);
   
   for (int k=1; k<=SIZE; k++){
     for (int i=1; i<=SIZE; i++){
@@ -47,9 +36,9 @@ void floyd_warshall(int * W, int SIZE){
   }
   printf("\nAFTER:\n");
   printf("Matrix D:\n");
-  print_mat(D, SIZE);
+  print_matrix(D, SIZE);
   printf("Matrix pi:\n");
-  print_mat(pi, SIZE);
+  print_matrix(pi, SIZE);
   free(pi);
   free(D);
 }

@@ -1,20 +1,6 @@
+#include "print.cc"
 #include "adjacency_list.cc"
 #include <math.h> 
-
-#ifndef PRINTMAT
-#define PRINTMAT
-
-void print_matrix(int* A, int dim){
-  //PRINT STARTS FROM 1!!!!
-  for(int i=1; i<=dim; i++){
-    for(int j=1; j<=dim; j++){
-      printf("%i ",A[i*dim+j]);
-    }
-    printf("\n");
-  }
-}
-
-#endif
 
 
 void matrix_multiplication(int* A, int* B, int* D_tmp, int size){

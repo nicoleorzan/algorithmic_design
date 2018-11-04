@@ -1,27 +1,9 @@
 //#define DEBUG
 #include "adjacency_list.cc"
 #include "queue.cc"
+#include "print.cc"
 // non posso usare il valore 0 nel grafo!!
 
-
-#ifndef PRINT
-#define PRINT
-template<typename T>
-void print_char(T* A, int dim){
-  for(int i=1; i<dim; i++){
-    printf("%c ",A[i]);
-  }
-  printf("\n");
-}
-
-template<typename T>
-void print_array(T* A, int dim){
-  for(int i=1; i<dim; i++){
-    printf("%i ",A[i]);
-  }
-  printf("\n");
-}
-#endif
 
 int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, char* color, adjacency_list *sccs){
 #ifdef DEBUG
@@ -113,7 +95,7 @@ adjacency_list* tarjan_scc(Graph g){
       }
     }
   }
-  printf("worst-case complexity: vert=%i, edges=%i, Θ(|V|+|E|)=%i\n",vert, edg, vert+edg);
+  printf("worst-case complexity: vert=%i, edges=%i, O(|V|+|E|)=%i\n",vert, edg, vert+edg);
 
   
   int* d = new int[g.SIZE*sizeof(int)];

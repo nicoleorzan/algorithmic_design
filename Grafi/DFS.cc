@@ -1,23 +1,13 @@
-template<typename T>
-void print_char(T A, int SIZE){
-  for(int i=1; i<=SIZE; i++){
-    printf("%c ",A[i]);
-  }
-  printf("\n");
-}
-template<typename T>
-void print_array(T A, int SIZE){
-  for(int i=1; i<=SIZE; i++){
-    printf("%i ",A[i]);
-  }
-  printf("\n");
-}
-
+#include "print.cc"
 
 void DFS_visit(Graph g, int u, char *color, int time, int* d, int *pi, int* f){
   printf("calling DFS_visit with u=%i \n", u);
   printf("time: %i, vector color: ",time);
   print_char(color, g.SIZE);
+  printf("vector d: ");
+  print_array(d, g.SIZE);
+  printf("vector f: ");
+  print_array(f, g.SIZE);
 
   time++;
   d[u] = time;
@@ -53,6 +43,8 @@ void DFS(Graph g){
   for(int u=1; u<=g.SIZE; u++){ 
     color[u] = 'w';
     pi[u] = 0;
+    d[u] = 999;
+    f[u] = 999;
   }
   printf("vector color inizialmente: ");
   print_char(color, g.SIZE);

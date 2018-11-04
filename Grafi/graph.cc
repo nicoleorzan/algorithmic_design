@@ -8,6 +8,7 @@
 #include "floyd_warshall.cc"
 #include "queue.cc"
 
+
 // NOTA: I NUMERI DEI VERTICI DEVONO PARTIRE DA 1, NON DA 0
 
 void Graph::print_admat() const {
@@ -34,7 +35,7 @@ void Graph::print_reach() const {
 }
 
 // Per inserire vertici nella matrice di adiacenza
-void Graph::insert_admat(int i, int j) {
+void Graph::insert_admat(int const i, int const j) {
   if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
     printf("size out of the limit!!");
     return;
@@ -49,7 +50,7 @@ void Graph::insert_admat(int i, int j) {
 
 // Per inserire vertici con direzione da i a j.
 // I vertici vengono ovviamente inseriti anche nella matrice di adiacenze
-void Graph::insert_reach(int i, int j, int w) { //i reaches j
+void Graph::insert_reach(int const  i, int const j, int const w) { //i reaches j
   if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
     printf("size out of the limit!!");
     return;
@@ -163,11 +164,11 @@ int main(){
 
   BFS_DFS();
 
-  Tarjan_and_FisherMeyer();
+  //Tarjan_and_FisherMeyer();
       
-  Dijkstra_and_Astar();
+  //Dijkstra_and_Astar();
 
-  Floyd_Warshall();
+  //Floyd_Warshall();
   
   printf("END\n");
   return 0;  

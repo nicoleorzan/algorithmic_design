@@ -1,26 +1,11 @@
+#include "print.cc"
 #include "queue.cc"
-
-void print_mat(int *arr, int SIZE){
-  for (int v=1; v<=SIZE; v++){
-    for (int w=1; w<=SIZE; w++){
-      printf("%i ", arr[v*SIZE+w]);
-    }
-    printf("\n");
-  }
-}
-
-void print_arr(int *arr, int SIZE){
-  for (int v=1; v<=SIZE; v++){
-      printf("%i ", arr[v]);
-    }
-  printf("\n");
-}
 
 
 void rebuilt_path(int * pi, int t, int s, int size){
   printf("\n====Rebuild path====\n");
   printf("pi array:\n");
-  print_arr(pi, size);
+  print_array(pi, size);
   queue * total_path = new queue();
   int current = t;
   total_path->enqueue(t);
@@ -50,11 +35,11 @@ void initialize_single_source(int* pi, int s, queue *priority, int *h, int t, in
   d[s] = 0;
   pi[s] = s;
   printf("--- heuristic distance matrix:\n");
-  print_mat(h, SIZE);
-  /*printf("--- pi arr:\n");
-  print_arr(pi, SIZE);
-  printf("--- d arr:\n");
-  print_arr(d, SIZE);
+  print_matrix(h, SIZE);
+  /*printf("--- pi array:\n");
+  print_array(pi, SIZE);
+  printf("--- d array:\n");
+  print_array(d, SIZE);
   printf("--- initial priority queue:\n");
   priority->print_priority();
   printf("\n");*/
@@ -76,7 +61,7 @@ void a_star(Graph g, int s, int t){ // s is the source and t is the destination 
   while(priority->is_empty()!=1){
     //priority->print_priority();
     //printf("printing pi:\n");
-    //print_arr(pi);
+    //print_array(pi);
     z = priority->extract_min();
     priority->dequeue_from_value(z);
     //printf("extracting z=%i\n", z);

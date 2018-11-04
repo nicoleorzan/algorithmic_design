@@ -1,24 +1,7 @@
-//#define DEBUG
+#include "print.cc"
 #include "queue.cc"
+//#define DEBUG
 
-#ifndef PRINT
-#define PRINT
-template<typename T>
-void print_char(T* A, int dim){
-  for(int i=1; i<=dim; i++){
-    printf("%c ",A[i]);
-  }
-  printf("\n");
-}
-
-template<typename T>
-void print_array(T* A, int dim){
-  for(int i=1; i<=dim; i++){
-    printf("%i ",A[i]);
-  }
-  printf("\n");
-}
-#endif
 
 void BFS(Graph g, int s){
   printf("================= \n");
