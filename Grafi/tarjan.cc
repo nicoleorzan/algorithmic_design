@@ -120,7 +120,6 @@ adjacency_list* tarjan_scc(Graph g){
   int* lowlink = new int[g.SIZE*sizeof(int)];
   char* color = new char[g.SIZE*sizeof(char)];
   queue q;
-  int edges=0;
   int time=0;
   adjacency_list* sccs(new adjacency_list());
   

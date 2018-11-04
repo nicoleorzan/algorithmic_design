@@ -91,7 +91,7 @@ void BFS_DFS(){
   DFS(g1);
 }
 
-void Tarjan(){
+void Tarjan_and_FisherMeyer(){
   printf("\n==== TARJAN: ====\n");
   Graph g1(7);
   g1.insert_reach(2,3,1); 
@@ -108,8 +108,10 @@ void Tarjan(){
   ad->reverse();
   ad->print_list();
 
-  printf("\n!!!!!!!!!!!!!!!!! Collapse !!!!!!!!!!!!!!!!\n");
-  adjacency_list *adj_sccs = collapse(g1, ad);
+  printf("\n!!!!!!!!!!!!!!!!! FisherMeyer !!!!!!!!!!!!!!!!\n");
+  // adjacency_list *adj_sccs = collapse(g1, ad);
+  FisherMeyer(g1, ad);
+
 }
 
 void Dijkstra_and_Astar(){
@@ -161,7 +163,7 @@ int main(){
 
   BFS_DFS();
 
-  Tarjan();
+  Tarjan_and_FisherMeyer();
       
   //Dijkstra_and_Astar();
 

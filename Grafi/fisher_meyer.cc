@@ -167,8 +167,7 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
   printf("\n========collapse=======\n");
   int mn_size = mn->return_size();
   int * vtom = new int[(g.SIZE+1)*sizeof(int)];
-  // int *vtom = (int*)malloc((SIZE+1)*sizeof(int));
-  adjacency_list* adjr(new adjacency_list());
+  adjacency_list* adjl(new adjacency_list());
   queue *coda = new queue();
 
   for (int v=1; v<=g.SIZE; v++){
@@ -178,10 +177,8 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
   //VTOM PARTE DA 1!!
   int i=1;
   int node = 0;
-  //printf("mn_size=%i\n\n",mn_size);
   while(i<=mn_size){
     node=mn->get_val_from_key(i);
-    //printf("node=%i\n",node);
     vtom[node] = i;
     coda = mn->get_node_from_key(i)->neighbors;
     if (coda->is_empty()!=1){
@@ -207,31 +204,33 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
    }
    for (int v=1; v<=g.SIZE; v++){
      for (int w=1; w<=g.SIZE; w++){
-       // if(g.admat[w*g.SIZE+v]!=0){
        if(g.reach[w*g.SIZE+v]!=0){
 	 //printf("%i collegato con %i\n",w,v);
-	 if(adjr->get_node(vtom[v])==nullptr){
-	   adjr->add_node(vtom[v]);
+	 if(adjl->get_node(vtom[v])==nullptr){
+	   adjl->add_node(vtom[v]);
 	   }
-	 if (vtom[w]!=vtom[v] && adjr->get_node(vtom[v])->neighbors->value_already_present(vtom[w])!=1 ){
+	 if (vtom[w]!=vtom[v] && adjl->get_node(vtom[v])->neighbors->value_already_present(vtom[w])!=1 ){
 	   //printf("adding %i to %i\n", vtom[w], vtom[v]);
-	   adjr->add_neighbor(vtom[v], vtom[w]);
+	   adjl->add_neighbor(vtom[v], vtom[w]);
 	 }
        }
      }
    }
-   printf("adjr:\n");
-   adjr->print_list();
-
-   int * adjm = (int*)malloc((mn_size+1)*(mn_size+1)*sizeof(int));
-   adjl_to_adjm(adjr, adjm, mn_size);
-   print_matrix(adjm, mn_size);
-   ut_matrix_tc(adjm, mn_size);
-
-
-   // adjacency_list* decollapsed =  decollapse(adjr, vtom);
+   //***
    
    delete[] vtom;
-   return adjr;
-  
+   return adjl;
+}
+
+
+void FisherMeyer(Graph g, adjacency_list *mn){
+  adjacency_list *adjl = collapse(g, mn);
+  printf("adjl:\n");
+  adjl->print_list();
+  int mn_size = mn->return_size();
+  int * adjm = (int*)malloc((mn_size+1)*(mn_size+1)*sizeof(int));
+  adjl_to_adjm(adjl, adjm, mn_size);
+  print_matrix(adjm, mn_size);
+  ut_matrix_tc(adjm, mn_size);
+  // adjacency_list* decollapsed =  decollapse(adjl, vtom);
 }
