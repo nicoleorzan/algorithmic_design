@@ -33,7 +33,7 @@ void Graph::print_reach() const {
     printf("\n");
 }
 
-
+// Per inserire vertici nella matrice di adiacenza
 void Graph::insert_admat(int i, int j) {
   if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
     printf("size out of the limit!!");
@@ -47,7 +47,8 @@ void Graph::insert_admat(int i, int j) {
   }
 }
 
-
+// Per inserire vertici con direzione da i a j.
+// I vertici vengono ovviamente inseriti anche nella matrice di adiacenze
 void Graph::insert_reach(int i, int j, int w) { //i reaches j
   if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
     printf("size out of the limit!!");
@@ -55,13 +56,13 @@ void Graph::insert_reach(int i, int j, int w) { //i reaches j
   }
     reach[i*SIZE+j] = w;
     admat[i*SIZE+j] = 1;
-    admat[j*SIZE+i] = 1; //<======== aggiunto questo l'avevo toltooooo
+    admat[j*SIZE+i] = 1; //<======== aggiunto questo
     admat[i*SIZE+i] = 1; //<======== aggiunto questo
     admat[j*SIZE+j] = 1; //<======== aggiunto questo 
     return;
 }
 
-
+//per svuotare il grafo
 void Graph::clear(){
   delete[] admat;
   delete[] reach;
@@ -70,16 +71,15 @@ void Graph::clear(){
 
 
 
-
-
+// ==================================================
+//         FUNZIONI PER TESTARE GLI ALGORITMI 
+// ==================================================
 void BFS_DFS(){
-  printf("================= \n");
-  printf("BREADTH FIRST SEARCH and DEPTH FIRST SEARCH\n");
-  printf("================= \n\n");
+  printf("\n======== BREADTH FIRST SEARCH and DEPTH FIRST SEARCH ========\n\n");
   Graph g1(7);
-  // metto pesi 1, non vengono usati da BFS e DFS
+  // metto pesi tutti=1, tanto non vengono usati da BFS e DFS
   g1.insert_reach(2,3,1); 
-  g1.insert_reach(4,3,1); // g1.insert_reach(3,4,1); 
+  g1.insert_reach(4,3,1);  
   g1.insert_reach(4,2,1); 
   g1.insert_reach(2,1,1);
   g1.insert_reach(2,7,1);
@@ -92,8 +92,9 @@ void BFS_DFS(){
 }
 
 void Tarjan_and_FisherMeyer(){
-  printf("\n==== TARJAN: ====\n");
+  printf("\n========= TARJAN: =========\n");
   Graph g1(7);
+  // metto pesi tutti=1, tanto non vengono usati da Tarjan
   g1.insert_reach(2,3,1); 
   g1.insert_reach(3,4,1); 
   g1.insert_reach(4,2,1); 
@@ -101,6 +102,7 @@ void Tarjan_and_FisherMeyer(){
   g1.insert_reach(2,7,1);
   g1.print_reach();
   g1.print_admat();
+  
   adjacency_list *ad= tarjan_scc(g1);
   printf("\n==== Printing strong connected components of the graph: ====\n");
   ad->print_list();
@@ -108,14 +110,13 @@ void Tarjan_and_FisherMeyer(){
   ad->reverse();
   ad->print_list();
 
-  printf("\n!!!!!!!!!!!!!!!!! FisherMeyer !!!!!!!!!!!!!!!!\n");
-  // adjacency_list *adj_sccs = collapse(g1, ad);
+  printf("\n============= FisherMeyer ===========\n");
   FisherMeyer(g1, ad);
 
 }
 
 void Dijkstra_and_Astar(){
-  printf("\n==== DIJKSTRA and A_STAR: ====\n\n");
+  printf("\n======== DIJKSTRA and A_STAR: ========\n\n");
   Graph g1(5);
   g1.insert_reach(1,2,10);
   g1.insert_reach(1,3,3);
@@ -129,13 +130,13 @@ void Dijkstra_and_Astar(){
   
   g1.print_reach();
   g1.print_admat();
-  int s=1;
+  int s=1, t=5;
   dijkstra(g1, s);
-  int t=5;
   a_star(g1, s, t);
 }
 
 void Floyd_Warshall(){
+  printf("\n======== FLOYD_WARSHALL: ========\n\n");
   Graph g2(8);
   g2.insert_reach(1,6,2);
   g2.insert_reach(1,3,4);
@@ -151,9 +152,8 @@ void Floyd_Warshall(){
   g2.insert_reach(2,8,20);
   g2.insert_reach(4,8,1);
   g2.insert_reach(5,8,2); 
-  int * W = g2.get_reach_mat();
 
-  floyd_warshall(W, g2.SIZE);
+  floyd_warshall(g2.get_reach_mat(), g2.SIZE);
 }
 
 
@@ -165,9 +165,9 @@ int main(){
 
   Tarjan_and_FisherMeyer();
       
-  //Dijkstra_and_Astar();
+  Dijkstra_and_Astar();
 
-  //Floyd_Warshall();
+  Floyd_Warshall();
   
   printf("END\n");
   return 0;  

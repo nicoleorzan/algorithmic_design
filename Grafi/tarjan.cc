@@ -130,7 +130,6 @@ adjacency_list* tarjan_scc(Graph g){
   }
   
   for (int v=1; v<=g.SIZE; v++){
-    //  int v=1;
     if (color[v]=='w' && g.admat[v+g.SIZE*v]!=0){
       time = tarjan_scc_real(g, v, time, q,  d, lowlink, color, sccs);
     }
