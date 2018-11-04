@@ -21,16 +21,6 @@ void Graph::print_admat() const {
     printf("\n");
 }
 
-void Graph::print_reached() const {
-  printf("print graph reached matrix:\n");
-    for(int i=1; i<=SIZE; i++){
-      for(int j=1; j<=SIZE; j++){
-	printf("%i ",reached[i*SIZE+j]);
-      }
-      printf("\n");
-    }
-    printf("\n");
-}
 
 void Graph::print_reach() const {
   printf("print graph reach matrix:\n");
@@ -58,17 +48,6 @@ void Graph::insert_admat(int i, int j) {
 }
 
 
-void Graph::insert_reached(int i, int j, int w){ // i is reached by j
-   if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
-    printf("size out of the limit!!");
-    return;
-   }
-    reached[i+SIZE*j] = w;
-    admat[i+SIZE*j] = 1;
-    //admat[i+SIZE*j] = 1;
-    return;
-}
-
 void Graph::insert_reach(int i, int j, int w) { //i reaches j
   if ((i<1 || i>SIZE) && (j<1 || j>SIZE)){
     printf("size out of the limit!!");
@@ -76,7 +55,7 @@ void Graph::insert_reach(int i, int j, int w) { //i reaches j
   }
     reach[i*SIZE+j] = w;
     admat[i*SIZE+j] = 1;
-    //admat[j*SIZE+i] = 1; //<======== aggiunto questo
+    admat[j*SIZE+i] = 1; //<======== aggiunto questo l'avevo toltooooo
     admat[i*SIZE+i] = 1; //<======== aggiunto questo
     admat[j*SIZE+j] = 1; //<======== aggiunto questo 
     return;
@@ -84,15 +63,9 @@ void Graph::insert_reach(int i, int j, int w) { //i reaches j
 
 
 void Graph::clear(){
-  free(admat);
-  free(reached);
-  free(reach);
+  delete[] admat;
+  delete[] reach;
 }
-
-
-
-
-
 
 
 
@@ -186,16 +159,9 @@ void Floyd_Warshall(){
 
 int main(){
 
-  //BFS_DFS();
+  BFS_DFS();
 
   Tarjan();
- 
-
-  //int* m = adjl_to_adjm(adj_sccs);
-  //int* m_star = ut_matrx_tc(m);
-  //printf("\n==== Printing adjrh: ====\n");
-  //adjr->print_list();
-
       
   //Dijkstra_and_Astar();
 

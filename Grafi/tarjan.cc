@@ -33,15 +33,14 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
   color[v] ='g';
   q.enqueue(v);
 #ifdef DEBUG
-  print_char(color,SIZE);
-  print_array(d,SIZE);
-  print_array(lowlink, SIZE);
+  print_char(color, g.SIZE);
+  print_array(d,g.SIZE);
+  print_array(lowlink, g.SIZE);
 #endif
 
 
   for (int w=1; w<=g.SIZE; w++){
-    if( g.admat[w+g.SIZE*v]==1){
-      //if( g.reach[w+g.SIZE*v]==1){
+    if( g.reach[w+g.SIZE*v]==1){ //admat -> reach
       if (color[w]=='w'){
 	time = tarjan_scc_real(g, w, time, q, d, lowlink, color, sccs);
 	if (lowlink[v]>lowlink[w]) { lowlink[v] = lowlink[w];}
@@ -88,7 +87,7 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
     //q.print_queue();
   }
 #ifdef DEBUG
-  scc.print_queue();
+  sccs->print_list();//s
   q.print_queue();
   print_char(color, g.SIZE);
   printf("exiting\n");
@@ -101,6 +100,22 @@ int tarjan_scc_real(Graph g, int v, int &time, queue &q, int* d, int* lowlink, c
 
 adjacency_list* tarjan_scc(Graph g){
   printf("====Tarjan scc====\n");
+
+   int vert=0;
+  int edg=0;
+  for (int i=1; i<=g.SIZE; i++){
+    for (int j=i; j<=g.SIZE; j++){
+      if (i==j){
+	if (g.admat[i+g.SIZE*j]!=0) vert++;
+      }
+      if( i!=j && g.admat[i+g.SIZE*j]!=0){
+	edg++;
+      }
+    }
+  }
+  printf("worst-case complexity: vert=%i, edges=%i, Θ(|V|+|E|)=%i\n",vert, edg, vert+edg);
+
+  
   int* d = new int[g.SIZE*sizeof(int)];
   int* lowlink = new int[g.SIZE*sizeof(int)];
   char* color = new char[g.SIZE*sizeof(char)];
@@ -110,14 +125,10 @@ adjacency_list* tarjan_scc(Graph g){
   adjacency_list* sccs(new adjacency_list());
   
   for (int i=1; i<=g.SIZE; i++){
-    for (int j=1; j<=g.SIZE; j++){
-      if (g.admat[i+g.SIZE*j]!=0) edges++;
-    }
     color[i] = 'w';
     d[i]=0;
     lowlink[i] = 999;
   }
-  printf("time should be~=%d\n", edges/2+g.SIZE);
   
   for (int v=1; v<=g.SIZE; v++){
     //  int v=1;

@@ -24,6 +24,19 @@ void BFS(Graph g, int s){
   printf("================= \n");
   printf("Breadth First Search algorithm\n");
   printf("================= \n\n");
+  int vert=0;
+  int edg=0;
+  for (int i=1; i<=g.SIZE; i++){
+    for (int j=i; j<=g.SIZE; j++){
+      if (i==j){
+	if (g.admat[i+g.SIZE*j]!=0) vert++;
+      }
+      if( i!=j && g.admat[i+g.SIZE*j]!=0){
+	edg++;
+      }
+    }
+  }
+  printf("worst-case complexity: vert=%i, edges=%i, O(|V|+|E|)=%i\n",vert, edg, vert+edg);
   
   printf("selected vertex number %i (counting from 1) \n", s);
   s=s-1;
@@ -79,7 +92,7 @@ void BFS(Graph g, int s){
        color[u] = 'b';
      }
    }// end while
-
+   printf("\nFinal output:\n");
    printf("color: ");
    print_char(color, g.SIZE);
    printf("dist: ");

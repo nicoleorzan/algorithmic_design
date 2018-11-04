@@ -77,7 +77,7 @@ int* matrix_real(int *m, int size){
     for (int j=1; j<=size2/2; j++){
       A[i*size2/2+j] = m[i*size+j];
       if (size2/2+i>size || size2/2+j>size)  {
-	printf("i = %i, j=%i\n", i, j);
+	//printf("i = %i, j=%i\n", i, j);
 	B[i*size2/2+j]=0;//-999;
       }
       else B[i*size2/2+j] = m[(size2/2+i)*size2+(size2/2+j)];
@@ -178,7 +178,7 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
   //VTOM PARTE DA 1!!
   int i=1;
   int node = 0;
-  printf("mn_size=%i\n\n",mn_size);
+  //printf("mn_size=%i\n\n",mn_size);
   while(i<=mn_size){
     node=mn->get_val_from_key(i);
     //printf("node=%i\n",node);
@@ -209,7 +209,7 @@ adjacency_list* collapse(Graph g, adjacency_list *mn){
      for (int w=1; w<=g.SIZE; w++){
        // if(g.admat[w*g.SIZE+v]!=0){
        if(g.reach[w*g.SIZE+v]!=0){
-	 printf("%i collegato con %i\n",w,v);
+	 //printf("%i collegato con %i\n",w,v);
 	 if(adjr->get_node(vtom[v])==nullptr){
 	   adjr->add_node(vtom[v]);
 	   }

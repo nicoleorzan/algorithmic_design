@@ -263,6 +263,7 @@ adjacency_list::node* adjacency_list::detach_last(){
 }
 
 void adjacency_list::reverse(){//not working
+  if (size==1) return;
   adjacency_list* t = new adjacency_list(*this);
   queue *qqq = new queue();
   node *ptr_t;
