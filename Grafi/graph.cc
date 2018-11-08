@@ -162,11 +162,11 @@ void Floyd_Warshall(){
 
 int main(){
 
-  BFS_DFS();
+  // BFS_DFS();
 
   //Tarjan_and_FisherMeyer();
       
-  //Dijkstra_and_Astar();
+  Dijkstra_and_Astar();
 
   //Floyd_Warshall();
   

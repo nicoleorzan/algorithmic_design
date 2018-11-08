@@ -1,4 +1,5 @@
 #include "queue.cc"
+#include <math.h> 
 
 void initialize_single_source(int* pi, int s, queue *priority, int size){
   for (int v=1; v<=size; v++){
@@ -14,15 +15,24 @@ void initialize_single_source(int* pi, int s, queue *priority, int size){
 
 void dijkstra(Graph g, int s){
   printf("============ Dijkstra ==========\n");
-  //computing complexity:
-  int edges=0;
+
+
+  int vert=0;
+  int edg=0;
   for (int i=1; i<=g.SIZE; i++){
-    for (int j=1; j<=g.SIZE; j++){
-      if (g.reach[i*g.SIZE*j]!=0) edges++;
+    for (int j=i; j<=g.SIZE; j++){
+      if (i==j){
+	if (g.admat[i+g.SIZE*j]!=0) vert++;
+      }
+      if( i!=j && g.admat[i+g.SIZE*j]!=0){
+	edg++;
+      }
     }
   }
-  printf("Complexity: O(|E|+|V|^2) = %i\n", edges+g.SIZE*g.SIZE);
-  printf("because we are using a priority queue\n");
+  printf("worst-case complexity: vert=%i, edges=%i, O(|E|+|V|^2) = %i -> ",vert, edg, vert*vert+edg);
+  printf("because we are using a simple queue\n");
+  printf("using a Fibonacci min Heap I would have got: O( |V|log|V|+|E| ) = %f\n",  vert*log(vert) + edg );
+  printf("using a Binary Heap I would have got: O( (|V|+|E|)log2|V| ) = %f\n\n\n",(vert+edg)*log2(vert));
   printf("we choose s=%i\n", s);
   int* pi = new int[g.SIZE*sizeof(int)];
   queue *S = new queue();

@@ -213,6 +213,9 @@ void strassen(K* A, K* B, K* C, int size){
 
 int main(){
 
+  printf("====Strassen algorithm====\n");
+  printf("naive matrix multiplication takes 2N^3 operations \n -> asymptotic complexity O(N^3) = O(N^log2(8))\n");
+  printf("strassen requires only 7 block-matrices multiplications and some summations \n -> O(N^log2(7))\n\n");
   int *A, *B, *C, *C_TRUE;
   int size;
   if (SIZE%2!=0) size = SIZE+1;
